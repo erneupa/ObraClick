@@ -42,7 +42,7 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
    - **Region:** `Frankfurt (EU Central)`
    - **Branch:** `main`
    - **Runtime:** `Node`
-   - **Build Command:** `npm install && npm run build:render`
+   - **Build Command:** `npm install --include=dev && npm run build:render`
    - **Start Command:** `npm run start`
    - **Plan:** `Free`
 4. En la sección **Environment Variables**, añade:
