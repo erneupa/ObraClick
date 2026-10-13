@@ -5,6 +5,10 @@ import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
 
+if (!process.env.NEXTAUTH_URL && process.env.RENDER_EXTERNAL_URL) {
+  process.env.NEXTAUTH_URL = process.env.RENDER_EXTERNAL_URL;
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma as any),
   providers: [
