@@ -60,7 +60,9 @@ export default function CreateProjectModal() {
           <div className="glass-panel slide-up" style={{
             maxWidth: "540px",
             width: "100%",
-            padding: "32px",
+            maxHeight: "90vh",
+            overflowY: "auto",
+            padding: "24px 20px",
             background: "#0f172a",
             position: "relative"
           }}>

@@ -19,44 +19,66 @@ export default async function DashboardHeader({ plan = "FREE", trialEndsAt = nul
 
   return (
     <header style={{
-      height: "70px",
+      height: "64px",
       borderBottom: "1px solid var(--surface-border)",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 24px",
-      background: "rgba(0,0,0,0.1)"
+      padding: "0 16px",
+      background: "rgba(0,0,0,0.2)"
     }}>
-      <div>
-        {/* Trial Status Notice in Header */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        {/* Mobile Header Brand */}
+        <a href="/dashboard" className="mobile-header-brand">
+          <span style={{ fontSize: "20px" }}>🏗️</span>
+          <span style={{ fontWeight: "800", letterSpacing: "-0.5px" }}>ObraClick</span>
+        </a>
+
+        {/* Trial Status Notice in Header (Desktop) */}
         {!isPro && trialEndsAt && (
-          <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "5px 12px",
-            borderRadius: "999px",
-            background: isTrialExpired ? "rgba(239, 68, 68, 0.15)" : "rgba(59, 130, 246, 0.15)",
-            border: `1px solid ${isTrialExpired ? "rgba(239, 68, 68, 0.35)" : "rgba(59, 130, 246, 0.3)"}`,
-            fontSize: "12px",
-            fontWeight: "600",
-            color: isTrialExpired ? "#f87171" : "#93c5fd"
-          }}>
-            <span>{isTrialExpired ? "⏳" : "🕒"}</span>
-            <span>
-              {isTrialExpired 
-                ? "Período de prueba finalizado • Modo solo lectura" 
-                : `Prueba gratuita: quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? "día" : "días"}`}
-            </span>
-          </div>
+          <>
+            <div className="trial-notice-desktop" style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "5px 12px",
+              borderRadius: "999px",
+              background: isTrialExpired ? "rgba(239, 68, 68, 0.15)" : "rgba(59, 130, 246, 0.15)",
+              border: `1px solid ${isTrialExpired ? "rgba(239, 68, 68, 0.35)" : "rgba(59, 130, 246, 0.3)"}`,
+              fontSize: "12px",
+              fontWeight: "600",
+              color: isTrialExpired ? "#f87171" : "#93c5fd"
+            }}>
+              <span>{isTrialExpired ? "⏳" : "🕒"}</span>
+              <span>
+                {isTrialExpired 
+                  ? "Período de prueba finalizado • Modo solo lectura" 
+                  : `Prueba gratuita: quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? "día" : "días"}`}
+              </span>
+            </div>
+
+            {/* Trial Notice (Compact Mobile) */}
+            <div className="trial-notice-mobile" style={{
+              alignItems: "center",
+              gap: "4px",
+              padding: "3px 8px",
+              borderRadius: "999px",
+              background: isTrialExpired ? "rgba(239, 68, 68, 0.2)" : "rgba(59, 130, 246, 0.2)",
+              fontSize: "11px",
+              fontWeight: "700",
+              color: isTrialExpired ? "#f87171" : "#93c5fd"
+            }}>
+              <span>{isTrialExpired ? "⏳ Exp" : `🕒 ${trialDaysRemaining}d`}</span>
+            </div>
+          </>
         )}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {session?.user && (
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ textAlign: "right" }} className="trial-notice-desktop">
+              <div style={{ fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px" }}>
                 <span>{session.user.name}</span>
                 <span style={{
                   fontSize: "10px",

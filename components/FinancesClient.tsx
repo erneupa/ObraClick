@@ -222,8 +222,8 @@ export default function FinancesClient({ projects, expenses, totalBudget, totalS
             No hay movimientos registrados para esta categoría.
           </div>
         ) : (
-          <div className="glass-panel" style={{ padding: "24px", overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "14px" }}>
+          <div className="glass-panel table-responsive" style={{ padding: "20px" }}>
+            <table style={{ width: "100%", minWidth: "650px", borderCollapse: "collapse", textAlign: "left", fontSize: "14px" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--surface-border)" }}>
                   <th style={{ padding: "12px", color: "var(--text-secondary)" }}>Fecha</th>

@@ -678,12 +678,14 @@ export default function ProjectDetailsClient({
       </div>
 
       {/* Tabs Navigation */}
-      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid var(--surface-border)", marginBottom: "32px", overflowX: "auto" }}>
+      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid var(--surface-border)", marginBottom: "32px", overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: "4px" }}>
         <button
           onClick={() => setActiveTab("hitos")}
           style={{
-            padding: "12px 20px",
-            fontSize: "15px",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            padding: "10px 16px",
+            fontSize: "14px",
             fontWeight: "600",
             color: activeTab === "hitos" ? "white" : "var(--text-secondary)",
             borderBottom: activeTab === "hitos" ? "2px solid var(--accent-primary)" : "2px solid transparent",
@@ -699,8 +701,10 @@ export default function ProjectDetailsClient({
         <button
           onClick={() => setActiveTab("diario")}
           style={{
-            padding: "12px 20px",
-            fontSize: "15px",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            padding: "10px 16px",
+            fontSize: "14px",
             fontWeight: "600",
             color: activeTab === "diario" ? "white" : "var(--text-secondary)",
             borderBottom: activeTab === "diario" ? "2px solid var(--accent-primary)" : "2px solid transparent",
@@ -716,8 +720,10 @@ export default function ProjectDetailsClient({
         <button
           onClick={() => setActiveTab("incidencias")}
           style={{
-            padding: "12px 20px",
-            fontSize: "15px",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            padding: "10px 16px",
+            fontSize: "14px",
             fontWeight: "600",
             color: activeTab === "incidencias" ? "white" : "var(--text-secondary)",
             borderBottom: activeTab === "incidencias" ? "2px solid var(--accent-primary)" : "2px solid transparent",
@@ -733,8 +739,10 @@ export default function ProjectDetailsClient({
         <button
           onClick={() => setActiveTab("gastos")}
           style={{
-            padding: "12px 20px",
-            fontSize: "15px",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            padding: "10px 16px",
+            fontSize: "14px",
             fontWeight: "600",
             color: activeTab === "gastos" ? "white" : "var(--text-secondary)",
             borderBottom: activeTab === "gastos" ? "2px solid var(--accent-primary)" : "2px solid transparent",
@@ -750,7 +758,7 @@ export default function ProjectDetailsClient({
 
       {/* TAB 1: HITOS */}
       {activeTab === "hitos" && (
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "32px" }}>
+        <div className="dashboard-two-column-grid">
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
               <h2 style={{ fontSize: "18px", margin: 0, fontWeight: "700" }}>Fases y Certificaciones Constructivas</h2>
@@ -796,7 +804,8 @@ export default function ProjectDetailsClient({
               </div>
             ) : milestoneViewMode === "gantt" ? (
               /* GANTT TIMELINE CHART */
-              <div className="glass-panel" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div className="glass-panel" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+                <div style={{ minWidth: "560px", display: "flex", flexDirection: "column", gap: "16px" }}>
                 {/* Gantt Header Timeline Scale */}
                 <div style={{ display: "grid", gridTemplateColumns: "180px 1fr", gap: "12px", borderBottom: "1px solid var(--surface-border)", paddingBottom: "10px", alignItems: "center" }}>
                   <span style={{ fontSize: "11px", fontWeight: "700", color: "var(--text-secondary)", textTransform: "uppercase" }}>Fase / Capítulo</span>
@@ -877,6 +886,7 @@ export default function ProjectDetailsClient({
                   <span style={{ color: "#60a5fa", fontWeight: "600" }}>
                     Cronograma sincronizado con el avance físico ({project.progress}%)
                   </span>
+                </div>
                 </div>
               </div>
             ) : (
@@ -992,7 +1002,7 @@ export default function ProjectDetailsClient({
 
       {/* TAB 2: DIARIO DE OBRA */}
       {activeTab === "diario" && (
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "32px" }}>
+        <div className="dashboard-two-column-grid">
           <div>
             <h2 style={{ fontSize: "18px", margin: "0 0 16px 0", fontWeight: "700" }}>Bitácora de Partes Diarios</h2>
             {project.dailyReports.length === 0 ? (
@@ -1230,7 +1240,7 @@ export default function ProjectDetailsClient({
 
       {/* TAB 3: INCIDENCIAS */}
       {activeTab === "incidencias" && (
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "32px" }}>
+        <div className="dashboard-two-column-grid">
           <div>
             <h2 style={{ fontSize: "18px", margin: "0 0 16px 0", fontWeight: "700" }}>Registro de Incidencias</h2>
             {project.incidents.length === 0 ? (
@@ -1361,7 +1371,7 @@ export default function ProjectDetailsClient({
 
       {/* TAB 4: GASTOS Y FINANZAS */}
       {activeTab === "gastos" && (
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "32px" }}>
+        <div className="dashboard-two-column-grid">
           <div>
             <h2 style={{ fontSize: "18px", margin: "0 0 16px 0", fontWeight: "700" }}>Partidas y Compras de la Obra</h2>
             {project.expenses.length === 0 ? (
@@ -1369,8 +1379,8 @@ export default function ProjectDetailsClient({
                 No hay compras o gastos imputados a esta obra aún.
               </div>
             ) : (
-              <div className="glass-panel" style={{ padding: "20px", overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "14px" }}>
+              <div className="glass-panel table-responsive" style={{ padding: "20px" }}>
+                <table style={{ width: "100%", minWidth: "550px", borderCollapse: "collapse", textAlign: "left", fontSize: "14px" }}>
                   <thead>
                     <tr style={{ borderBottom: "1px solid var(--surface-border)" }}>
                       <th style={{ padding: "10px", color: "var(--text-secondary)" }}>Concepto</th>

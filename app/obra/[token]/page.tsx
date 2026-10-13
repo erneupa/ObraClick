@@ -104,21 +104,21 @@ export default async function ClientPortalPage({
         </div>
       </header>
 
-      <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "32px 20px 60px" }}>
+      <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 14px 60px" }}>
         {/* Project Hero */}
         <div style={{
           background: "rgba(15, 23, 42, 0.6)",
           backdropFilter: "blur(16px)",
           border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "24px",
-          padding: "32px",
-          marginBottom: "28px",
+          borderRadius: "20px",
+          padding: "24px 18px",
+          marginBottom: "24px",
           boxShadow: "0 8px 32px rgba(0,0,0,0.37)",
         }}>
-          <h1 style={{ fontSize: "32px", fontWeight: "800", margin: "0 0 8px 0", letterSpacing: "-0.5px" }}>
+          <h1 style={{ fontSize: "26px", fontWeight: "800", margin: "0 0 8px 0", letterSpacing: "-0.5px" }}>
             {project.name}
           </h1>
-          <p style={{ color: "#94a3b8", margin: "0 0 20px 0", fontSize: "15px" }}>
+          <p style={{ color: "#94a3b8", margin: "0 0 20px 0", fontSize: "14px" }}>
             📍 {project.location || "Sin localización"}
             {project.clientName && <span> — Cliente: <strong style={{ color: "#fff" }}>{project.clientName}</strong></span>}
           </p>
@@ -130,7 +130,7 @@ export default async function ClientPortalPage({
 
           {/* Progress Bar */}
           <div style={{ marginBottom: "8px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginBottom: "8px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", marginBottom: "8px" }}>
               <span style={{ color: "#94a3b8" }}>Avance Global de la Obra</span>
               <strong style={{ color: "#fff" }}>{project.progress}%</strong>
             </div>
@@ -147,7 +147,7 @@ export default async function ClientPortalPage({
         </div>
 
         {/* KPI Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "32px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 140px), 1fr))", gap: "12px", marginBottom: "28px" }}>
           <div style={{
             background: "rgba(15,23,42,0.6)", backdropFilter: "blur(16px)",
             border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px",

@@ -149,7 +149,7 @@ export default async function DashboardPage() {
       )}
 
       {/* KPI Cards Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px", marginBottom: "36px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: "16px", marginBottom: "32px" }}>
         <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
             <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>Obras Activas</span>
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
       )}
 
       {/* Main Content Area: Projects Grid & Activity */}
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "28px" }}>
+      <div className="dashboard-two-column-grid">
         
         {/* Left Column: Projects List */}
         <div>

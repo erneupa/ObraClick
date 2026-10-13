@@ -33,7 +33,7 @@ export default function DashboardCharts({ projects }: DashboardChartsProps) {
   const total = projects.length;
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "32px" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "20px", marginBottom: "32px" }}>
       {/* Budget vs Spending Chart */}
       <div className="glass-panel" style={{ padding: "24px" }}>
         <h3 style={{ fontSize: "16px", fontWeight: "700", margin: "0 0 4px 0" }}>

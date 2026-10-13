@@ -45,7 +45,9 @@ export default function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalPr
       <div className="glass-panel slide-up" style={{
         maxWidth: "520px",
         width: "100%",
-        padding: "36px",
+        maxHeight: "90vh",
+        overflowY: "auto",
+        padding: "28px 20px",
         background: "radial-gradient(circle at top, #1e293b 0%, #0b0f19 90%)",
         border: "2px solid rgba(59, 130, 246, 0.4)",
         boxShadow: "0 25px 60px -15px rgba(59, 130, 246, 0.35)",

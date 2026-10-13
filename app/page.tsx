@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
+import LandingHeader from "@/components/LandingHeader";
 
 export const instant = false;
 
@@ -106,78 +106,12 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Background ambient glows */}
+      {/* Ambient background glows */}
       <div className="glow-spot" style={{ top: "-100px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "500px", background: "radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0) 70%)" }} />
       <div className="glow-spot" style={{ top: "800px", right: "-100px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%)" }} />
 
-      {/* Navigation Header */}
-      <header style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid var(--surface-border)",
-        background: "rgba(11, 15, 25, 0.8)"
-      }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }} aria-label="ObraClick Inicio">
-            <div style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "22px",
-              boxShadow: "0 4px 12px rgba(59, 130, 246, 0.4)"
-            }}>
-              🏗️
-            </div>
-            <div>
-              <span style={{ fontSize: "22px", fontWeight: "800", letterSpacing: "-0.5px", color: "#ffffff" }}>
-                Obra<span style={{ color: "var(--accent-primary)" }}>Click</span>
-              </span>
-              <span style={{ display: "block", fontSize: "10px", textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--text-secondary)", fontWeight: "600" }}>
-                Control & Gestión de Obra
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Nav Links */}
-          <nav style={{ display: "flex", alignItems: "center", gap: "28px" }} aria-label="Navegación principal">
-            <a href="#caracteristicas" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Características</a>
-            <a href="#modulos" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Plataforma</a>
-            <a href="#para-quien" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Para Quién</a>
-            <a href="#soluciones" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Soluciones</a>
-            <a href="#comparativa" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Comparativa</a>
-            <a href="#precios" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>Precios</a>
-            <a href="#faq" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500", transition: "color 0.2s" }}>FAQ</a>
-          </nav>
-
-          {/* User Auth status buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <ThemeToggle />
-            {session ? (
-              <Link href="/dashboard" className="btn-primary" style={{ padding: "10px 20px", fontSize: "14px" }} id="btn-header-dashboard">
-                <span>Panel de Control</span>
-                <span>→</span>
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "600", padding: "8px 14px" }} id="btn-header-login">
-                  Iniciar Sesión
-                </Link>
-                <Link href="/login" className="btn-primary" style={{ padding: "10px 20px", fontSize: "14px" }} id="btn-header-trial">
-                  <span>Probar Gratis</span>
-                  <span>🚀</span>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      {/* Responsive Navigation Header */}
+      <LandingHeader hasSession={!!session} />
 
       {/* Main Content Landmark */}
       <main style={{ flex: 1 }}>
@@ -209,7 +143,7 @@ export default async function HomePage() {
             La solución en la nube #1 para <strong style={{ color: "#fff" }}>constructoras, arquitectos, jefes de obra y reformas</strong>. Controla presupuestos, certificaciones, diario de obra digital con fotos e incidencias en un solo clic.
           </p>
 
-          <div className="slide-up" style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap", marginBottom: "48px" }}>
+          <div className="slide-up hero-buttons-container" style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap", marginBottom: "48px" }}>
             <Link href="/login" className="btn-primary" style={{ padding: "16px 36px", fontSize: "18px", borderRadius: "14px" }} id="btn-hero-start">
               <span>Empezar Gratis Ahora (14 Días)</span>
               <span>→</span>
@@ -221,7 +155,7 @@ export default async function HomePage() {
           </div>
 
           {/* Live Social Proof Metrics */}
-          <div style={{
+          <div className="hero-metrics-grid" style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
             gap: "24px",

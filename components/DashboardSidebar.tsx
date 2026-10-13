@@ -20,6 +20,7 @@ export default function DashboardSidebar({
   const pathname = usePathname();
   const { data: session } = useSession();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Resolved plan: prop or session or FREE
   const currentPlan = (propPlan || (session?.user as any)?.plan || "FREE").toUpperCase();
@@ -40,7 +41,7 @@ export default function DashboardSidebar({
 
   return (
     <>
-      <aside style={{
+      <aside className="desktop-sidebar" style={{
         width: "260px",
         borderRight: "1px solid var(--surface-border)",
         background: "rgba(0,0,0,0.25)",
@@ -231,6 +232,258 @@ export default function DashboardSidebar({
           </div>
         </div>
       </aside>
+
+      {/* Mobile Bottom Navigation Bar (Fixed for phones & tablets) */}
+      <nav className="mobile-bottom-bar" aria-label="Navegación móvil">
+        <Link 
+          href="/dashboard"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+            color: pathname === "/dashboard" ? "var(--accent-primary)" : "var(--text-secondary)",
+            textDecoration: "none",
+            fontSize: "11px",
+            fontWeight: pathname === "/dashboard" ? "700" : "500",
+            flex: 1,
+            padding: "4px 0",
+          }}
+        >
+          <span style={{ fontSize: "20px" }}>📊</span>
+          <span>Inicio</span>
+        </Link>
+
+        <Link 
+          href="/dashboard/proyectos"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+            color: pathname?.startsWith("/dashboard/proyectos") ? "var(--accent-primary)" : "var(--text-secondary)",
+            textDecoration: "none",
+            fontSize: "11px",
+            fontWeight: pathname?.startsWith("/dashboard/proyectos") ? "700" : "500",
+            flex: 1,
+            padding: "4px 0",
+          }}
+        >
+          <span style={{ fontSize: "20px" }}>🏗️</span>
+          <span>Obras</span>
+        </Link>
+
+        <Link 
+          href="/dashboard/equipo"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+            color: pathname === "/dashboard/equipo" ? "var(--accent-primary)" : "var(--text-secondary)",
+            textDecoration: "none",
+            fontSize: "11px",
+            fontWeight: pathname === "/dashboard/equipo" ? "700" : "500",
+            flex: 1,
+            padding: "4px 0",
+          }}
+        >
+          <span style={{ fontSize: "20px" }}>👥</span>
+          <span>Equipo</span>
+        </Link>
+
+        <Link 
+          href="/dashboard/finanzas"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+            color: pathname === "/dashboard/finanzas" ? "var(--accent-primary)" : "var(--text-secondary)",
+            textDecoration: "none",
+            fontSize: "11px",
+            fontWeight: pathname === "/dashboard/finanzas" ? "700" : "500",
+            flex: 1,
+            padding: "4px 0",
+          }}
+        >
+          <span style={{ fontSize: "20px" }}>💰</span>
+          <span>Finanzas</span>
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(true)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "3px",
+            color: mobileMenuOpen ? "var(--accent-primary)" : "var(--text-secondary)",
+            background: "none",
+            border: "none",
+            fontSize: "11px",
+            fontWeight: "500",
+            flex: 1,
+            padding: "4px 0",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ fontSize: "20px" }}>☰</span>
+          <span>Menú</span>
+        </button>
+      </nav>
+
+      {/* Mobile Slide-up Drawer Menu */}
+      {mobileMenuOpen && (
+        <div 
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.7)",
+            backdropFilter: "blur(8px)",
+            zIndex: 1000,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end"
+          }}
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div 
+            style={{
+              background: "#0f172a",
+              borderTop: "1px solid var(--surface-border)",
+              borderTopLeftRadius: "24px",
+              borderTopRightRadius: "24px",
+              padding: "24px 20px 40px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "14px",
+              maxHeight: "80vh",
+              overflowY: "auto"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "20px" }}>🏗️</span>
+                <span style={{ fontWeight: "800", fontSize: "18px", color: "#fff" }}>ObraClick</span>
+                <span style={{
+                  fontSize: "10px",
+                  fontWeight: "800",
+                  padding: "2px 6px",
+                  borderRadius: "6px",
+                  background: isPro ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" : "rgba(255,255,255,0.08)",
+                  color: isPro ? "#000" : "var(--text-secondary)"
+                }}>
+                  {isPro ? "PRO ⭐" : "FREE"}
+                </span>
+              </div>
+              <button 
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ background: "none", border: "none", color: "var(--text-secondary)", fontSize: "22px", cursor: "pointer", padding: "4px" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Trial notice in mobile menu */}
+            {!isPro && trialEndsAt && (
+              <div style={{
+                background: isTrialExpired ? "rgba(239, 68, 68, 0.15)" : "rgba(59, 130, 246, 0.15)",
+                border: `1px solid ${isTrialExpired ? "rgba(239, 68, 68, 0.35)" : "rgba(59, 130, 246, 0.3)"}`,
+                borderRadius: "12px",
+                padding: "12px",
+                fontSize: "12px",
+                color: isTrialExpired ? "#f87171" : "#93c5fd"
+              }}>
+                <div style={{ fontWeight: "700", marginBottom: "4px" }}>
+                  {isTrialExpired ? "⏳ Período de prueba finalizado" : `🕒 Quedan ${trialDaysRemaining} días de prueba gratuita`}
+                </div>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setShowUpgradeModal(true);
+                  }}
+                  style={{
+                    color: "#60a5fa",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    textDecoration: "underline",
+                    cursor: "pointer"
+                  }}
+                >
+                  Activar Plan PRO (Obras ilimitadas) →
+                </button>
+              </div>
+            )}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <Link 
+                href="/dashboard/suscripcion"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  background: pathname === "/dashboard/suscripcion" ? "var(--accent-primary)" : "rgba(255, 255, 255, 0.05)",
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "14px"
+                }}
+              >
+                <span>💳</span>
+                <span>Planes y Suscripción</span>
+              </Link>
+
+              <Link 
+                href="/dashboard/settings"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  background: pathname === "/dashboard/settings" ? "var(--accent-primary)" : "rgba(255, 255, 255, 0.05)",
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "14px"
+                }}
+              >
+                <span>⚙️</span>
+                <span>Ajustes y Privacidad RGPD</span>
+              </Link>
+
+              <Link 
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  background: "rgba(255, 255, 255, 0.05)",
+                  color: "var(--text-secondary)",
+                  textDecoration: "none",
+                  fontSize: "14px"
+                }}
+              >
+                <span>🌐</span>
+                <span>Página de Inicio</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Upgrade Modal */}
       <UpgradeModal 

@@ -178,7 +178,7 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
           </p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "24px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "20px" }}>
           {filteredProjects.map((p) => {
             const openIncidents = p.incidents.filter((i: any) => i.status !== "RESUELTA").length;
             const completedMilestones = p.milestones.filter((m: any) => m.completed).length;
