@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 
 export const instant = false;
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; registered?: string }>;
+}) {
+  const params = await searchParams;
   const session = await getServerSession(authOptions);
   
   if (session) {
@@ -49,7 +54,7 @@ export default async function LoginPage() {
           </p>
         </div>
         <div>
-          <AuthForm />
+          <AuthForm serverError={params?.error} />
         </div>
         <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--surface-border)" }}>
           <p style={{ margin: 0, fontSize: "13px", color: "var(--text-secondary)" }}>

@@ -5,8 +5,14 @@ import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
 
-if (!process.env.NEXTAUTH_URL && process.env.RENDER_EXTERNAL_URL) {
-  process.env.NEXTAUTH_URL = process.env.RENDER_EXTERNAL_URL;
+if (process.env.NEXTAUTH_URL) {
+  process.env.NEXTAUTH_URL = process.env.NEXTAUTH_URL.trim().replace(/\/$/, "");
+} else if (process.env.RENDER_EXTERNAL_URL) {
+  process.env.NEXTAUTH_URL = process.env.RENDER_EXTERNAL_URL.trim().replace(/\/$/, "");
+}
+
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  console.warn("⚠️ [Auth] GOOGLE_CLIENT_ID o GOOGLE_CLIENT_SECRET no están definidos en las variables de entorno.");
 }
 
 export const authOptions: NextAuthOptions = {
@@ -99,5 +105,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: false,
+  debug: true,
 };

@@ -1,14 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { registerUser } from "@/lib/actions";
 
-export default function AuthForm() {
+export default function AuthForm({ serverError }: { serverError?: string }) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (serverError) {
+      if (serverError === "Configuration") {
+        setError("Error de configuración de Google: faltan las variables GOOGLE_CLIENT_ID o GOOGLE_CLIENT_SECRET en Render.");
+      } else if (serverError === "OAuthSignin" || serverError === "OAuthCallback") {
+        setError("Error de sincronización con Google: comprueba que las URLs de redirección coincidan exactamente en Google Cloud Console.");
+      } else if (serverError === "AccessDenied") {
+        setError("Acceso denegado: tu cuenta de Google no autorizó el acceso.");
+      } else {
+        setError(`Error de autenticación (${serverError}). Puedes crear una cuenta o entrar con correo y contraseña.`);
+      }
+    }
+  }, [serverError]);
 
   // Form states
   const [email, setEmail] = useState("");
@@ -146,7 +161,17 @@ export default function AuthForm() {
       {/* Google Login Fast Button */}
       <button
         type="button"
-        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+        disabled={googleLoading || loading}
+        onClick={async () => {
+          setGoogleLoading(true);
+          setError(null);
+          try {
+            await signIn("google", { callbackUrl: "/dashboard" });
+          } catch (err: any) {
+            setError(err.message || "Error al conectar con Google");
+            setGoogleLoading(false);
+          }
+        }}
         className="btn-secondary"
         style={{
           width: "100%",
@@ -157,7 +182,9 @@ export default function AuthForm() {
           gap: "10px",
           fontSize: "14px",
           fontWeight: "600",
-          marginBottom: "20px"
+          marginBottom: "20px",
+          opacity: googleLoading ? 0.7 : 1,
+          cursor: googleLoading ? "wait" : "pointer"
         }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
@@ -166,7 +193,11 @@ export default function AuthForm() {
           <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
           <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
         </svg>
-        <span>{mode === "login" ? "Continuar con Google" : "Registrarse con Google"}</span>
+        <span>
+          {googleLoading 
+            ? "Conectando con Google..." 
+            : (mode === "login" ? "Continuar con Google" : "Registrarse con Google")}
+        </span>
       </button>
 
       {/* Divider */}
