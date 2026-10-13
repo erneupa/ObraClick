@@ -1,12 +1,13 @@
 import { prisma } from "./lib/prisma";
 
 async function main() {
-  const user = await prisma.user.findFirst({
-    where: { email: "aaronneupaver@gmail.com" },
-  });
+  const targetEmail = process.env.ADMIN_EMAIL || process.env.SEED_EMAIL;
+  const user = targetEmail 
+    ? await prisma.user.findFirst({ where: { email: targetEmail } })
+    : await prisma.user.findFirst();
 
   if (!user) {
-    console.log("No user found to seed.");
+    console.log("No user found to seed. Create an account first or set ADMIN_EMAIL.");
     return;
   }
 
