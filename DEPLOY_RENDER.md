@@ -42,7 +42,7 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
    - **Region:** `Frankfurt (EU Central)`
    - **Branch:** `main`
    - **Runtime:** `Node`
-   - **Build Command:** `npm run build:render`
+   - **Build Command:** `npm install && npm run build:render`
    - **Start Command:** `npm run start`
    - **Plan:** `Free`
 4. En la sección **Environment Variables**, añade:
@@ -54,10 +54,10 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
 
 ---
 
-## ¿Qué hace automáticamente el comando `npm run build:render`?
+## ¿Qué hace automáticamente el comando `build:render`?
 1. Ejecuta `node scripts/switch-db.js postgresql` para adaptar Prisma a PostgreSQL en el contenedor de Render.
-2. Ejecuta `npx prisma generate` para crear el cliente de base de datos nativo para Linux.
-3. Ejecuta `npx prisma db push --accept-data-loss` para crear todas las tablas automáticamente en la base de datos de Render.
+2. Ejecuta `prisma generate` para crear el cliente de base de datos nativo para Linux.
+3. Ejecuta `prisma db push --accept-data-loss` para crear todas las tablas automáticamente en la base de datos de Render.
 4. Ejecuta `next build` para compilar el frontend optimizado para producción.
 
 ---

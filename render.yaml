@@ -12,9 +12,11 @@ services:
     region: frankfurt
     plan: free
     branch: main
-    buildCommand: npm run build:render
+    buildCommand: npm install && npm run build:render
     startCommand: npm run start
     envVars:
+      - key: NODE_VERSION
+        value: 22.13.0
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
