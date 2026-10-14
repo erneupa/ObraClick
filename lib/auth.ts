@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
+import { sendWelcomeEmail } from "./email";
 
 if (process.env.NEXTAUTH_URL) {
   process.env.NEXTAUTH_URL = process.env.NEXTAUTH_URL.trim().replace(/\/$/, "");
@@ -99,6 +100,9 @@ export const authOptions: NextAuthOptions = {
             trialEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
           },
         });
+        if (user.email) {
+          sendWelcomeEmail(user.email, user.name || "Constructor").catch(() => {});
+        }
       } catch (e) {
         console.error("Error setting trialEndsAt on createUser:", e);
       }
