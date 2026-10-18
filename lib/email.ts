@@ -192,3 +192,54 @@ export async function sendTrialExpiringEmail(to: string, userName: string, daysL
     html,
   });
 }
+
+// 4. Recuperación de Contraseña
+export async function sendPasswordResetEmail(to: string, userName: string, resetLink: string) {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8" /></head>
+      <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 40px 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background: #131d31; border: 1px solid #1e293b; border-radius: 16px; padding: 36px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <div style="text-align: center; margin-bottom: 28px;">
+            <h1 style="color: #3b82f6; font-size: 26px; margin: 0; font-weight: 800;">🏗️ ObraClick</h1>
+            <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Recuperación Segura de Contraseña</p>
+          </div>
+
+          <h2 style="color: #ffffff; font-size: 20px;">Restablecer contraseña</h2>
+          <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
+            Hola ${escapeHtml(userName)}, hemos recibido una solicitud para restablecer la contraseña de tu cuenta en ObraClick.
+          </p>
+
+          <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
+            Haz clic en el siguiente botón para elegir una nueva contraseña:
+          </p>
+
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="${resetLink}" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff; padding: 14px 28px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 15px; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);">
+              🔐 Restablecer mi Contraseña
+            </a>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px; border-radius: 8px; margin: 24px 0;">
+            <p style="margin: 0; color: #94a3b8; font-size: 12px; line-height: 1.5;">
+              ⏱️ <strong>Este enlace expirará en 1 hora</strong> por motivos de seguridad.<br />
+              Si no has solicitado este cambio, puedes ignorar este correo; tu contraseña actual continuará siendo segura.
+            </p>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid #1e293b; margin: 28px 0;" />
+          <p style="color: #64748b; font-size: 12px; text-align: center; margin: 0;">
+            © ${new Date().getFullYear()} ObraClick · Software de Gestión de Obras
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  return sendEmail({
+    to,
+    subject: "🔐 Restablecer tu contraseña en ObraClick",
+    html,
+  });
+}

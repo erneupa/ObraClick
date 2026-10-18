@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { registerUser } from "@/lib/actions";
 
 function getServerErrorMsg(serverError?: string): string | null {
@@ -273,9 +274,17 @@ export default function AuthForm({ serverError }: { serverError?: string }) {
           </div>
 
           <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text-secondary)", marginBottom: "4px" }}>
-              Contraseña
-            </label>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+              <label style={{ fontSize: "12px", fontWeight: "600", color: "var(--text-secondary)" }}>
+                Contraseña
+              </label>
+              <Link
+                href="/recuperar-password"
+                style={{ fontSize: "12px", color: "var(--accent-primary)", textDecoration: "none", transition: "opacity 0.2s" }}
+              >
+                ¿Has olvidado tu contraseña?
+              </Link>
+            </div>
             <input
               type="password"
               required

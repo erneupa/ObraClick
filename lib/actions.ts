@@ -5,7 +5,8 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
-import { sendUrgentIncidentEmail, sendWelcomeEmail } from "@/lib/email";
+import { sendUrgentIncidentEmail, sendWelcomeEmail, sendPasswordResetEmail } from "@/lib/email";
+import { getSiteUrl } from "@/lib/site";
 
 // ================= HELPERS =================
 //
@@ -924,6 +925,110 @@ export async function registerUser(formData: FormData) {
     }
     console.error("Error creando usuario:", e);
     return { success: false as const, error: "No se pudo crear la cuenta. Inténtalo de nuevo en unos minutos." };
+  }
+}
+
+export async function requestPasswordReset(formData: FormData) {
+  const email = readText(formData.get("email"), 150).toLowerCase();
+
+  if (!email || !EMAIL_REGEX.test(email)) {
+    return { ok: false as const, error: "Introduce un correo electrónico válido" };
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true, name: true, email: true, password: true },
+    });
+
+    // Solo enviamos enlace si el usuario existe y tiene contraseña asignada (no cuentas OAuth exclusivas)
+    if (user && user.password && user.email) {
+      // Limpiar tokens anteriores para este email
+      await prisma.verificationToken.deleteMany({
+        where: { identifier: email },
+      });
+
+      const token = crypto.randomUUID();
+      const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora de validez
+
+      await prisma.verificationToken.create({
+        data: {
+          identifier: email,
+          token,
+          expires,
+        },
+      });
+
+      const resetLink = `${getSiteUrl()}/recuperar-password?token=${token}`;
+      await sendPasswordResetEmail(user.email, user.name || "Constructor", resetLink);
+    }
+
+    // Por seguridad, siempre devolvemos el mismo mensaje para evitar enumeración de cuentas
+    return {
+      ok: true as const,
+      message: "Si este correo está registrado, recibirás un enlace de recuperación en los próximos minutos.",
+    };
+  } catch (error) {
+    console.error("Error en requestPasswordReset:", error);
+    return {
+      ok: false as const,
+      error: "No se pudo procesar la solicitud. Inténtalo de nuevo en unos minutos.",
+    };
+  }
+}
+
+export async function resetPasswordWithToken(formData: FormData) {
+  const token = readText(formData.get("token"), 100);
+  const password = typeof formData.get("password") === "string" ? (formData.get("password") as string) : "";
+  const confirmPassword = typeof formData.get("confirmPassword") === "string" ? (formData.get("confirmPassword") as string) : "";
+
+  if (!token) {
+    return { ok: false as const, error: "El token de recuperación es obligatorio" };
+  }
+
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return { ok: false as const, error: `La nueva contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres` };
+  }
+
+  if (password.length > MAX_PASSWORD_LENGTH) {
+    return { ok: false as const, error: `La contraseña no puede superar los ${MAX_PASSWORD_LENGTH} caracteres` };
+  }
+
+  if (password !== confirmPassword) {
+    return { ok: false as const, error: "Las contraseñas no coinciden" };
+  }
+
+  try {
+    const tokenRecord = await prisma.verificationToken.findUnique({
+      where: { token },
+    });
+
+    if (!tokenRecord || new Date() > new Date(tokenRecord.expires)) {
+      return {
+        ok: false as const,
+        error: "El enlace de recuperación ha caducado o no es válido. Por favor, solicita uno nuevo.",
+      };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+      where: { email: tokenRecord.identifier },
+      data: { password: hashedPassword },
+    });
+
+    // Eliminar el token usado
+    await prisma.verificationToken.delete({
+      where: { token },
+    });
+
+    return { ok: true as const };
+  } catch (error) {
+    console.error("Error en resetPasswordWithToken:", error);
+    return {
+      ok: false as const,
+      error: "Error al actualizar la contraseña. Por favor, solicita un nuevo enlace.",
+    };
   }
 }
 
