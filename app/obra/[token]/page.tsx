@@ -319,8 +319,9 @@ export default async function ClientPortalPage({
                   BAJA: "#60a5fa", MEDIA: "#f59e0b", ALTA: "#f97316", URGENTE: "#ef4444",
                 };
                 const statusIcons: Record<string, string> = {
-                  ABIERTA: "🔴", EN_REVISION: "🟡", RESUELTA: "🟢",
+                  ABIERTA: "🔴", EN_PROCESO: "🟡", EN_REVISION: "🟡", RESUELTA: "🟢",
                 };
+                const priorityColor = priorityColors[inc.priority] || "#94a3b8";
                 return (
                   <div key={inc.id} style={{
                     background: "rgba(255,255,255,0.03)",
@@ -343,8 +344,8 @@ export default async function ClientPortalPage({
                     <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                       <span style={{
                         padding: "3px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "700",
-                        background: `${priorityColors[inc.priority]}20`,
-                        color: priorityColors[inc.priority],
+                        background: `${priorityColor}20`,
+                        color: priorityColor,
                       }}>
                         {inc.priority}
                       </span>

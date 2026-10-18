@@ -46,8 +46,11 @@ export default async function SettingsPage() {
     if (!currentPassword || !newPassword) {
       throw new Error("Rellena todos los campos");
     }
-    if (newPassword.length < 6) {
-      throw new Error("La nueva contraseña debe tener al menos 6 caracteres");
+    if (newPassword.length < 8) {
+      throw new Error("La nueva contraseña debe tener al menos 8 caracteres");
+    }
+    if (newPassword.length > 72) {
+      throw new Error("La nueva contraseña no puede superar los 72 caracteres");
     }
     if (newPassword !== confirmPassword) {
       throw new Error("Las contraseñas no coinciden");

@@ -86,7 +86,11 @@ export default function AuthForm({ serverError }: { serverError?: string }) {
     formData.append("role", role);
 
     try {
-      await registerUser(formData);
+      const result = await registerUser(formData);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       setSuccess("¡Cuenta creada con éxito! Iniciando sesión...");
       
       // Auto login after registration
@@ -429,12 +433,13 @@ export default function AuthForm({ serverError }: { serverError?: string }) {
 
           <div>
             <label style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "var(--text-secondary)", marginBottom: "4px" }}>
-              Contraseña (mínimo 6 caracteres) *
+              Contraseña (mínimo 8 caracteres) *
             </label>
             <input
               type="password"
               required
-              minLength={6}
+              minLength={8}
+              maxLength={72}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"

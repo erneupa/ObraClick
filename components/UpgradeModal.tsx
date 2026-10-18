@@ -18,13 +18,17 @@ export default function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalPr
   async function handleUpgrade() {
     setLoading(true);
     try {
-      await upgradeToPro();
+      const result = await upgradeToPro();
+      if (!result.ok) {
+        alert(result.error);
+        return;
+      }
       setSuccess(true);
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-    } catch (err: any) {
-      alert(err.message || "Error al actualizar suscripción");
+    } catch {
+      alert("Error al actualizar la suscripción. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }

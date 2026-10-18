@@ -7,6 +7,96 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { sendUrgentIncidentEmail, sendWelcomeEmail } from "@/lib/email";
 
+// ================= HELPERS =================
+//
+// NOTA: en producción Next.js oculta el mensaje de los errores lanzados desde
+// Server Actions (el cliente solo recibe un texto genérico). Por eso las acciones
+// cuyo error debe verse en pantalla (registro, crear obra, equipo, planes) devuelven
+// un objeto de resultado en lugar de lanzar una excepción.
+
+const TRIAL_DURATION_MS = 14 * 24 * 60 * 60 * 1000;
+const MAX_AMOUNT = 100_000_000;
+const MAX_PHOTO_CHARS = 5 * 1024 * 1024;
+const MAX_SIGNATURE_CHARS = 512 * 1024;
+
+const PROJECT_STATUSES = ["PLANIFICACION", "EN_EJECUCION", "PARALIZADA", "FINALIZADA"] as const;
+const INCIDENT_PRIORITIES = ["BAJA", "MEDIA", "ALTA", "URGENTE"] as const;
+// La interfaz usa EN_PROCESO; EN_REVISION se mantiene por compatibilidad con datos antiguos.
+const INCIDENT_STATUSES = ["ABIERTA", "EN_PROCESO", "EN_REVISION", "RESUELTA"] as const;
+const EXPENSE_CATEGORIES = ["MATERIALES", "MANO_DE_OBRA", "MAQUINARIA", "SUBCONTRATAS", "OTROS"] as const;
+const EXPENSE_STATUSES = ["PAGADO", "PENDIENTE", "EN_REVISION"] as const;
+const REGISTER_ROLES = [
+  "Jefe de Obra",
+  "Arquitecto / Aparejador",
+  "Empresa Constructora",
+  "Promotor Inmobiliario",
+] as const;
+
+function readText(value: FormDataEntryValue | null, max: number): string {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
+
+function readChoice<T extends string>(
+  value: FormDataEntryValue | null,
+  allowed: readonly T[],
+  fallback: T
+): T {
+  return typeof value === "string" && (allowed as readonly string[]).includes(value)
+    ? (value as T)
+    : fallback;
+}
+
+/** Importe en euros: devuelve null si no es un número válido entre 0 y MAX_AMOUNT. */
+function readAmount(value: FormDataEntryValue | null): number | null {
+  if (typeof value !== "string") return null;
+  const n = parseFloat(value.replace(",", "."));
+  if (!Number.isFinite(n) || n < 0 || n > MAX_AMOUNT) return null;
+  return Math.round(n * 100) / 100;
+}
+
+function readCount(value: FormDataEntryValue | null, max = 10000): number {
+  const n = typeof value === "string" ? parseInt(value, 10) : 0;
+  return Number.isFinite(n) ? Math.min(Math.max(n, 0), max) : 0;
+}
+
+function readDate(value: string): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function validateImageData(value: string, maxChars: number, label: string): string {
+  if (!value.startsWith("data:image/")) {
+    throw new Error(`${label} no es una imagen válida`);
+  }
+  if (value.length > maxChars) {
+    throw new Error(`${label} es demasiado grande`);
+  }
+  return value;
+}
+
+function fail<C extends string>(code: C, error: string) {
+  return { ok: false as const, code, error };
+}
+
+type TrialInfo = { plan: string | null; trialEndsAt: Date | null };
+
+function isProPlan(plan: string | null | undefined): boolean {
+  return plan === "PRO" || plan === "ENTERPRISE";
+}
+
+// CERROJO 2: Verificación de período de prueba de 14 días
+function isTrialExpired(user: TrialInfo): boolean {
+  if (isProPlan(user.plan)) return false;
+  return !!user.trialEndsAt && new Date() > new Date(user.trialEndsAt);
+}
+
+function checkUserTrial(user: TrialInfo) {
+  if (isTrialExpired(user)) {
+    throw new Error("TRIAL_EXPIRED");
+  }
+}
+
 async function getAuthenticatedUser() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -31,45 +121,70 @@ async function verifyProjectOwnership(projectId: string, userId: string) {
   return project;
 }
 
-// CERROJO 2: Verificación de período de prueba de 14 días
-function checkUserTrial(user: any) {
-  const isPro = user.plan === "PRO" || user.plan === "ENTERPRISE";
-  if (isPro) return;
+/** Recalcula el % de avance de la obra a partir de sus hitos. */
+async function recalcProgress(projectId: string) {
+  const [total, done] = await Promise.all([
+    prisma.milestone.count({ where: { projectId } }),
+    prisma.milestone.count({ where: { projectId, completed: true } }),
+  ]);
+  const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+  await prisma.project.update({
+    where: { id: projectId },
+    data: { progress },
+  });
+}
 
-  if (user.trialEndsAt) {
-    const isExpired = new Date() > new Date(user.trialEndsAt);
-    if (isExpired) {
-      throw new Error("TRIAL_EXPIRED");
-    }
-  }
+/** Recalcula el gasto total de la obra a partir de sus gastos. */
+async function recalcSpent(projectId: string) {
+  const agg = await prisma.expense.aggregate({
+    where: { projectId },
+    _sum: { amount: true },
+  });
+  const spent = Math.round((agg._sum.amount ?? 0) * 100) / 100;
+  await prisma.project.update({
+    where: { id: projectId },
+    data: { spent },
+  });
 }
 
 // ================= PROJECTS =================
 export async function createProject(formData: FormData) {
   const user = await getAuthenticatedUser();
-  checkUserTrial(user);
-  
+
+  if (isTrialExpired(user)) {
+    return fail("TRIAL_EXPIRED", "Tu período de prueba de 14 días ha finalizado.");
+  }
+
   // Freemium limit: Free tier allows maximum 1 active project
-  const isPro = user.plan === "PRO" || user.plan === "ENTERPRISE";
-  if (!isPro) {
+  if (!isProPlan(user.plan)) {
     const projectCount = await prisma.project.count({
       where: { userId: user.id },
     });
     if (projectCount >= 1) {
-      throw new Error("PLAN_LIMIT_PROJECTS");
+      return fail("PLAN_LIMIT_PROJECTS", "Has alcanzado el límite de obras del Plan Gratuito.");
     }
   }
 
-  const name = formData.get("name") as string;
-  const description = (formData.get("description") as string) || "";
-  const location = (formData.get("location") as string) || "";
-  const clientName = (formData.get("clientName") as string) || "";
-  const budget = parseFloat((formData.get("budget") as string) || "0");
-  const status = (formData.get("status") as string) || "EN_EJECUCION";
-  const endDateStr = formData.get("endDate") as string;
+  const name = readText(formData.get("name"), 150);
+  const description = readText(formData.get("description"), 2000);
+  const location = readText(formData.get("location"), 200);
+  const clientName = readText(formData.get("clientName"), 150);
+  const status = readChoice(formData.get("status"), PROJECT_STATUSES, "EN_EJECUCION");
 
-  if (!name || name.trim() === "") {
-    throw new Error("El nombre de la obra es obligatorio");
+  if (!name) {
+    return fail("INVALID", "El nombre de la obra es obligatorio");
+  }
+
+  const budgetRaw = readText(formData.get("budget"), 30);
+  const budget = budgetRaw === "" ? 0 : readAmount(budgetRaw);
+  if (budget === null) {
+    return fail("INVALID", "El presupuesto indicado no es válido");
+  }
+
+  const endDateRaw = readText(formData.get("endDate"), 40);
+  const endDate = readDate(endDateRaw);
+  if (endDateRaw && !endDate) {
+    return fail("INVALID", "La fecha de fin indicada no es válida");
   }
 
   const project = await prisma.project.create({
@@ -80,13 +195,14 @@ export async function createProject(formData: FormData) {
       clientName,
       budget,
       spent: 0,
-      progress: 0,
+      // El primer hito ("Planificación y Permisos") nace completado: 1 de 6 = 17 %
+      progress: 17,
       status,
-      endDate: endDateStr ? new Date(endDateStr) : null,
+      endDate,
       userId: user.id,
       milestones: {
         create: [
-          { title: "Planificación y Permisos de Obra", order: 1, completed: true },
+          { title: "Planificación y Permisos de Obra", order: 1, completed: true, completedAt: new Date() },
           { title: "Cimentación y Movimiento de Tierras", order: 2, completed: false },
           { title: "Estructura de Hormigón / Acero", order: 3, completed: false },
           { title: "Cerramientos y Albañilería", order: 4, completed: false },
@@ -99,7 +215,7 @@ export async function createProject(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/proyectos");
-  return project;
+  return { ok: true as const, projectId: project.id };
 }
 
 export async function deleteProject(projectId: string) {
@@ -117,19 +233,35 @@ export async function deleteProject(projectId: string) {
 
 export async function updateProject(formData: FormData) {
   const user = await getAuthenticatedUser();
-  checkUserTrial(user);
-  const projectId = formData.get("projectId") as string;
+
+  if (isTrialExpired(user)) {
+    return fail("TRIAL_EXPIRED", "Tu período de prueba ha finalizado.");
+  }
+
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
 
-  const name = (formData.get("name") as string)?.trim();
-  const description = (formData.get("description") as string) || "";
-  const location = (formData.get("location") as string) || "";
-  const clientName = (formData.get("clientName") as string) || "";
-  const budget = parseFloat((formData.get("budget") as string) || "0");
-  const status = (formData.get("status") as string) || "EN_EJECUCION";
-  const endDateStr = formData.get("endDate") as string;
+  const name = readText(formData.get("name"), 150);
+  const description = readText(formData.get("description"), 2000);
+  const location = readText(formData.get("location"), 200);
+  const clientName = readText(formData.get("clientName"), 150);
+  const status = readChoice(formData.get("status"), PROJECT_STATUSES, "EN_EJECUCION");
 
-  if (!name) throw new Error("El nombre de la obra es obligatorio");
+  if (!name) {
+    return fail("INVALID", "El nombre de la obra es obligatorio");
+  }
+
+  const budgetRaw = readText(formData.get("budget"), 30);
+  const budget = budgetRaw === "" ? 0 : readAmount(budgetRaw);
+  if (budget === null) {
+    return fail("INVALID", "El presupuesto indicado no es válido");
+  }
+
+  const endDateRaw = readText(formData.get("endDate"), 40);
+  const endDate = readDate(endDateRaw);
+  if (endDateRaw && !endDate) {
+    return fail("INVALID", "La fecha de fin indicada no es válida");
+  }
 
   await prisma.project.update({
     where: { id: projectId },
@@ -140,13 +272,14 @@ export async function updateProject(formData: FormData) {
       clientName,
       budget,
       status,
-      endDate: endDateStr ? new Date(endDateStr) : null,
+      endDate,
     },
   });
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/proyectos");
   revalidatePath("/dashboard");
+  return { ok: true as const };
 }
 
 export async function generateClientToken(projectId: string) {
@@ -177,6 +310,8 @@ export async function revokeClientToken(projectId: string) {
 
 export async function updateProjectStatus(projectId: string, status: string) {
   const user = await getAuthenticatedUser();
+  if (!(PROJECT_STATUSES as readonly string[]).includes(status)) return;
+
   await prisma.project.updateMany({
     where: {
       id: projectId,
@@ -193,34 +328,26 @@ export async function updateProjectStatus(projectId: string, status: string) {
 // ================= MILESTONES =================
 export async function toggleMilestone(milestoneId: string, projectId: string) {
   const user = await getAuthenticatedUser();
+  checkUserTrial(user);
   await verifyProjectOwnership(projectId, user.id);
-  const milestone = await prisma.milestone.findUnique({
-    where: { id: milestoneId },
+
+  // El hito debe pertenecer a la obra verificada (evita tocar hitos de otras obras)
+  const milestone = await prisma.milestone.findFirst({
+    where: { id: milestoneId, projectId },
   });
 
   if (!milestone) return;
 
   const newCompleted = !milestone.completed;
   await prisma.milestone.update({
-    where: { id: milestoneId },
+    where: { id: milestone.id },
     data: {
       completed: newCompleted,
       completedAt: newCompleted ? new Date() : null,
     },
   });
 
-  // Calculate updated project progress
-  const allMilestones = await prisma.milestone.findMany({
-    where: { projectId },
-  });
-  if (allMilestones.length > 0) {
-    const completedCount = allMilestones.filter((m) => m.id === milestoneId ? newCompleted : m.completed).length;
-    const progress = Math.round((completedCount / allMilestones.length) * 100);
-    await prisma.project.update({
-      where: { id: projectId },
-      data: { progress },
-    });
-  }
+  await recalcProgress(projectId);
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/proyectos");
@@ -230,33 +357,45 @@ export async function toggleMilestone(milestoneId: string, projectId: string) {
 export async function addMilestone(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const projectId = formData.get("projectId") as string;
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const description = ((formData.get("description") as string) || "").slice(0, 500);
+  const title = readText(formData.get("title"), 150);
+  const description = readText(formData.get("description"), 500);
 
   if (!title) return;
+
+  // Mantener el orden: el nuevo hito va al final
+  const last = await prisma.milestone.aggregate({
+    where: { projectId },
+    _max: { order: true },
+  });
 
   await prisma.milestone.create({
     data: {
       projectId,
       title,
       description,
+      order: (last._max.order ?? 0) + 1,
       completed: false,
     },
   });
 
+  // Al añadir un hito cambia la proporción de hitos completados
+  await recalcProgress(projectId);
+
   revalidatePath(`/dashboard/proyectos/${projectId}`);
+  revalidatePath("/dashboard/proyectos");
+  revalidatePath("/dashboard");
 }
 
 export async function updateMilestone(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const milestoneId = formData.get("id") as string;
-  const projectId = formData.get("projectId") as string;
+  const milestoneId = readText(formData.get("id"), 100);
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const description = ((formData.get("description") as string) || "").slice(0, 500);
+  const title = readText(formData.get("title"), 150);
+  const description = readText(formData.get("description"), 500);
 
   if (!title) return;
 
@@ -277,18 +416,7 @@ export async function deleteMilestone(milestoneId: string, projectId: string) {
     where: { id: milestoneId, projectId },
   });
 
-  // Calculate updated project progress
-  const allMilestones = await prisma.milestone.findMany({
-    where: { projectId },
-  });
-  const progress = allMilestones.length > 0
-    ? Math.round((allMilestones.filter((m) => m.completed).length / allMilestones.length) * 100)
-    : 0;
-
-  await prisma.project.update({
-    where: { id: projectId },
-    data: { progress },
-  });
+  await recalcProgress(projectId);
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/proyectos");
@@ -299,18 +427,23 @@ export async function deleteMilestone(milestoneId: string, projectId: string) {
 export async function addDailyReport(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const projectId = formData.get("projectId") as string;
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const notes = (formData.get("notes") as string)?.trim().slice(0, 2000);
-  const weather = (formData.get("weather") as string) || "Soleado";
-  const workersCount = Math.max(0, parseInt((formData.get("workersCount") as string) || "0", 10));
-  const imageUrl = (formData.get("imageUrl") as string) || null;
-  const signatureUrl = (formData.get("signatureUrl") as string) || null;
+  const title = readText(formData.get("title"), 150);
+  const notes = readText(formData.get("notes"), 2000);
+  const weather = readText(formData.get("weather"), 40) || "Soleado";
+  const workersCount = readCount(formData.get("workersCount"));
 
-  if (imageUrl && imageUrl.length > 5 * 1024 * 1024) {
-    throw new Error("La fotografía adjunta no puede superar 5 MB");
-  }
+  const imageRaw = formData.get("imageUrl");
+  const signatureRaw = formData.get("signatureUrl");
+  const imageUrl =
+    typeof imageRaw === "string" && imageRaw
+      ? validateImageData(imageRaw, MAX_PHOTO_CHARS, "La fotografía adjunta")
+      : null;
+  const signatureUrl =
+    typeof signatureRaw === "string" && signatureRaw
+      ? validateImageData(signatureRaw, MAX_SIGNATURE_CHARS, "La firma")
+      : null;
 
   if (!title || !notes) return;
 
@@ -333,29 +466,41 @@ export async function addDailyReport(formData: FormData) {
 export async function updateDailyReport(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const reportId = formData.get("id") as string;
-  const projectId = formData.get("projectId") as string;
+  const reportId = readText(formData.get("id"), 100);
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const notes = (formData.get("notes") as string)?.trim().slice(0, 2000);
-  const weather = (formData.get("weather") as string) || "Soleado";
-  const workersCount = Math.max(0, parseInt((formData.get("workersCount") as string) || "0", 10));
-  const imageUrl = formData.get("imageUrl") as string | null;
-  const signatureUrl = formData.get("signatureUrl") as string | null;
+  const title = readText(formData.get("title"), 150);
+  const notes = readText(formData.get("notes"), 2000);
+  const weather = readText(formData.get("weather"), 40) || "Soleado";
+  const workersCount = readCount(formData.get("workersCount"));
+  const imageRaw = formData.get("imageUrl");
+  const signatureRaw = formData.get("signatureUrl");
 
   if (!title || !notes) return;
 
-  const dataToUpdate: any = {
+  const dataToUpdate: {
+    title: string;
+    notes: string;
+    weather: string;
+    workersCount: number;
+    imageUrl?: string | null;
+    signatureUrl?: string | null;
+  } = {
     title,
     notes,
     weather,
     workersCount,
   };
-  if (imageUrl !== null && imageUrl !== undefined) {
-    dataToUpdate.imageUrl = imageUrl || null;
+  // Campo ausente = no tocar; cadena vacía = borrar; valor = reemplazar
+  if (typeof imageRaw === "string") {
+    dataToUpdate.imageUrl = imageRaw
+      ? validateImageData(imageRaw, MAX_PHOTO_CHARS, "La fotografía adjunta")
+      : null;
   }
-  if (signatureUrl !== null && signatureUrl !== undefined) {
-    dataToUpdate.signatureUrl = signatureUrl || null;
+  if (typeof signatureRaw === "string") {
+    dataToUpdate.signatureUrl = signatureRaw
+      ? validateImageData(signatureRaw, MAX_SIGNATURE_CHARS, "La firma")
+      : null;
   }
 
   await prisma.dailyReport.updateMany({
@@ -384,12 +529,12 @@ export async function deleteDailyReport(reportId: string, projectId: string) {
 export async function addIncident(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const projectId = formData.get("projectId") as string;
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const description = (formData.get("description") as string)?.trim().slice(0, 1000);
-  const priority = (formData.get("priority") as string) || "MEDIA";
-  const assignedTo = ((formData.get("assignedTo") as string) || "").slice(0, 100);
+  const title = readText(formData.get("title"), 150);
+  const description = readText(formData.get("description"), 1000);
+  const priority = readChoice(formData.get("priority"), INCIDENT_PRIORITIES, "MEDIA");
+  const assignedTo = readText(formData.get("assignedTo"), 100);
 
   if (!title || !description) return;
 
@@ -418,14 +563,14 @@ export async function addIncident(formData: FormData) {
 export async function updateIncident(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const incidentId = formData.get("id") as string;
-  const projectId = formData.get("projectId") as string;
+  const incidentId = readText(formData.get("id"), 100);
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const title = (formData.get("title") as string)?.trim().slice(0, 150);
-  const description = (formData.get("description") as string)?.trim().slice(0, 1000);
-  const priority = (formData.get("priority") as string) || "MEDIA";
-  const status = (formData.get("status") as string) || "ABIERTA";
-  const assignedTo = ((formData.get("assignedTo") as string) || "").slice(0, 100);
+  const title = readText(formData.get("title"), 150);
+  const description = readText(formData.get("description"), 1000);
+  const priority = readChoice(formData.get("priority"), INCIDENT_PRIORITIES, "MEDIA");
+  const status = readChoice(formData.get("status"), INCIDENT_STATUSES, "ABIERTA");
+  const assignedTo = readText(formData.get("assignedTo"), 100);
 
   if (!title || !description) return;
 
@@ -459,6 +604,7 @@ export async function deleteIncident(incidentId: string, projectId: string) {
 
 export async function resolveIncident(incidentId: string, projectId: string) {
   const user = await getAuthenticatedUser();
+  checkUserTrial(user);
   await verifyProjectOwnership(projectId, user.id);
   await prisma.incident.updateMany({
     where: { id: incidentId, projectId },
@@ -473,16 +619,16 @@ export async function resolveIncident(incidentId: string, projectId: string) {
 export async function addExpense(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const projectId = formData.get("projectId") as string;
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const concept = (formData.get("concept") as string)?.trim().slice(0, 150);
-  const category = (formData.get("category") as string) || "MATERIALES";
-  const amount = parseFloat((formData.get("amount") as string) || "0");
-  const supplier = ((formData.get("supplier") as string) || "").slice(0, 100);
-  const invoiceNumber = ((formData.get("invoiceNumber") as string) || "").slice(0, 50);
-  const status = (formData.get("status") as string) || "PAGADO";
+  const concept = readText(formData.get("concept"), 150);
+  const category = readChoice(formData.get("category"), EXPENSE_CATEGORIES, "MATERIALES");
+  const amount = readAmount(formData.get("amount"));
+  const supplier = readText(formData.get("supplier"), 100);
+  const invoiceNumber = readText(formData.get("invoiceNumber"), 50);
+  const status = readChoice(formData.get("status"), EXPENSE_STATUSES, "PAGADO");
 
-  if (!concept || isNaN(amount) || amount <= 0 || amount > 100000000) return;
+  if (!concept || amount === null || amount <= 0) return;
 
   await prisma.expense.create({
     data: {
@@ -496,16 +642,7 @@ export async function addExpense(formData: FormData) {
     },
   });
 
-  // Update total spent for project
-  const allExpenses = await prisma.expense.findMany({
-    where: { projectId },
-  });
-  const totalSpent = allExpenses.reduce((acc, curr) => acc + curr.amount, 0);
-
-  await prisma.project.update({
-    where: { id: projectId },
-    data: { spent: totalSpent },
-  });
+  await recalcSpent(projectId);
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/finanzas");
@@ -515,17 +652,17 @@ export async function addExpense(formData: FormData) {
 export async function updateExpense(formData: FormData) {
   const user = await getAuthenticatedUser();
   checkUserTrial(user);
-  const expenseId = formData.get("id") as string;
-  const projectId = formData.get("projectId") as string;
+  const expenseId = readText(formData.get("id"), 100);
+  const projectId = readText(formData.get("projectId"), 100);
   await verifyProjectOwnership(projectId, user.id);
-  const concept = (formData.get("concept") as string)?.trim().slice(0, 150);
-  const category = (formData.get("category") as string) || "MATERIALES";
-  const amount = parseFloat((formData.get("amount") as string) || "0");
-  const supplier = ((formData.get("supplier") as string) || "").slice(0, 100);
-  const invoiceNumber = ((formData.get("invoiceNumber") as string) || "").slice(0, 50);
-  const status = (formData.get("status") as string) || "PAGADO";
+  const concept = readText(formData.get("concept"), 150);
+  const category = readChoice(formData.get("category"), EXPENSE_CATEGORIES, "MATERIALES");
+  const amount = readAmount(formData.get("amount"));
+  const supplier = readText(formData.get("supplier"), 100);
+  const invoiceNumber = readText(formData.get("invoiceNumber"), 50);
+  const status = readChoice(formData.get("status"), EXPENSE_STATUSES, "PAGADO");
 
-  if (!concept || isNaN(amount) || amount <= 0 || amount > 100000000) return;
+  if (!concept || amount === null || amount <= 0) return;
 
   await prisma.expense.updateMany({
     where: { id: expenseId, projectId },
@@ -539,16 +676,7 @@ export async function updateExpense(formData: FormData) {
     },
   });
 
-  // Update total spent for project
-  const allExpenses = await prisma.expense.findMany({
-    where: { projectId },
-  });
-  const totalSpent = allExpenses.reduce((acc, curr) => acc + curr.amount, 0);
-
-  await prisma.project.update({
-    where: { id: projectId },
-    data: { spent: totalSpent },
-  });
+  await recalcSpent(projectId);
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/finanzas");
@@ -564,16 +692,7 @@ export async function deleteExpense(expenseId: string, projectId: string) {
     where: { id: expenseId, projectId },
   });
 
-  // Update total spent for project
-  const allExpenses = await prisma.expense.findMany({
-    where: { projectId },
-  });
-  const totalSpent = allExpenses.reduce((acc, curr) => acc + curr.amount, 0);
-
-  await prisma.project.update({
-    where: { id: projectId },
-    data: { spent: totalSpent },
-  });
+  await recalcSpent(projectId);
 
   revalidatePath(`/dashboard/proyectos/${projectId}`);
   revalidatePath("/dashboard/finanzas");
@@ -584,24 +703,29 @@ export async function deleteExpense(expenseId: string, projectId: string) {
 export async function addTeamMember(formData: FormData) {
   const user = await getAuthenticatedUser();
 
+  if (isTrialExpired(user)) {
+    return fail("TRIAL_EXPIRED", "Tu período de prueba de 14 días ha finalizado.");
+  }
+
   // Freemium limit: Free tier allows maximum 2 team members
-  const isPro = user.plan === "PRO" || user.plan === "ENTERPRISE";
-  if (!isPro) {
+  if (!isProPlan(user.plan)) {
     const memberCount = await prisma.teamMember.count({
       where: { userId: user.id },
     });
     if (memberCount >= 2) {
-      throw new Error("PLAN_LIMIT_TEAM");
+      return fail("PLAN_LIMIT_TEAM", "Has alcanzado el límite de colaboradores del Plan Gratuito.");
     }
   }
 
-  const name = formData.get("name") as string;
-  const role = formData.get("role") as string;
-  const email = (formData.get("email") as string) || "";
-  const phone = (formData.get("phone") as string) || "";
-  const company = (formData.get("company") as string) || "";
+  const name = readText(formData.get("name"), 100);
+  const role = readText(formData.get("role"), 100);
+  const email = readText(formData.get("email"), 150);
+  const phone = readText(formData.get("phone"), 40);
+  const company = readText(formData.get("company"), 150);
 
-  if (!name || !role) return;
+  if (!name || !role) {
+    return fail("INVALID", "El nombre y el rol del colaborador son obligatorios");
+  }
 
   await prisma.teamMember.create({
     data: {
@@ -617,6 +741,7 @@ export async function addTeamMember(formData: FormData) {
 
   revalidatePath("/dashboard/equipo");
   revalidatePath("/dashboard");
+  return { ok: true as const };
 }
 
 export async function deleteTeamMember(memberId: string) {
@@ -633,8 +758,31 @@ export async function deleteTeamMember(memberId: string) {
 }
 
 // ================= SUBSCRIPTION =================
+
+/**
+ * Todavía no hay pasarela de pago integrada, así que cambiar a PRO desde la
+ * interfaz NO cobra nada. Para que cualquier usuario no pueda darse PRO gratis,
+ * solo se permite si:
+ *  - ALLOW_FREE_PRO_UPGRADE=true (modo demo, decisión consciente del propietario), o
+ *  - el email del usuario coincide con ADMIN_EMAIL (cuenta del propietario).
+ */
+function canSelfUpgrade(email: string | null): boolean {
+  if (process.env.ALLOW_FREE_PRO_UPGRADE === "true") return true;
+  const admin = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  return !!admin && !!email && email.toLowerCase() === admin;
+}
+
 export async function upgradeToPro() {
   const user = await getAuthenticatedUser();
+
+  if (!canSelfUpgrade(user.email)) {
+    return {
+      ok: false as const,
+      error:
+        "El pago del Plan PRO todavía no está activado. Escríbenos a soporte para contratarlo y te lo activamos.",
+    };
+  }
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
@@ -648,6 +796,7 @@ export async function upgradeToPro() {
   revalidatePath("/dashboard/equipo");
   revalidatePath("/dashboard/finanzas");
   revalidatePath("/dashboard/suscripcion");
+  return { ok: true as const };
 }
 
 export async function downgradeToFree() {
@@ -665,23 +814,41 @@ export async function downgradeToFree() {
   revalidatePath("/dashboard/equipo");
   revalidatePath("/dashboard/finanzas");
   revalidatePath("/dashboard/suscripcion");
+  return { ok: true as const };
 }
 
 // ================= AUTH =================
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 72; // bcrypt ignora lo que exceda de 72 bytes
+
 export async function registerUser(formData: FormData) {
-  const name = (formData.get("name") as string)?.trim();
-  const email = (formData.get("email") as string)?.toLowerCase().trim();
-  const password = formData.get("password") as string;
-  const role = (formData.get("role") as string) || "Jefe de Obra";
-  const cif = (formData.get("cif") as string)?.toUpperCase().trim();
-  const companyName = (formData.get("companyName") as string)?.trim();
+  const name = readText(formData.get("name"), 100);
+  const email = readText(formData.get("email"), 150).toLowerCase();
+  const passwordRaw = formData.get("password");
+  const password = typeof passwordRaw === "string" ? passwordRaw : "";
+  const role = readChoice(formData.get("role"), REGISTER_ROLES, "Jefe de Obra");
+  const cif = readText(formData.get("cif"), 30).toUpperCase().replace(/[\s.-]/g, "");
+  const companyName = readText(formData.get("companyName"), 150);
 
   if (!name || !email || !password || !cif) {
-    throw new Error("Nombre, email, contraseña y CIF/NIF de la empresa son obligatorios");
+    return { success: false as const, error: "Nombre, email, contraseña y CIF/NIF de la empresa son obligatorios" };
   }
 
-  if (password.length < 6) {
-    throw new Error("La contraseña debe tener al menos 6 caracteres");
+  if (!EMAIL_REGEX.test(email)) {
+    return { success: false as const, error: "El correo electrónico no es válido" };
+  }
+
+  if (!/^[A-Z0-9]{6,20}$/.test(cif)) {
+    return { success: false as const, error: "El CIF/NIF no es válido: usa solo letras y números (6-20 caracteres)" };
+  }
+
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return { success: false as const, error: `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres` };
+  }
+
+  if (password.length > MAX_PASSWORD_LENGTH) {
+    return { success: false as const, error: `La contraseña no puede superar los ${MAX_PASSWORD_LENGTH} caracteres` };
   }
 
   const existing = await prisma.user.findUnique({
@@ -689,7 +856,7 @@ export async function registerUser(formData: FormData) {
   });
 
   if (existing) {
-    throw new Error("Este correo electrónico ya está registrado");
+    return { success: false as const, error: "Este correo electrónico ya está registrado" };
   }
 
   // CERROJO 3: Control único por CIF/NIF para evitar multicuentas fraudulentas
@@ -698,32 +865,44 @@ export async function registerUser(formData: FormData) {
   });
 
   if (existingCif) {
-    throw new Error(`El CIF/NIF (${cif}) ya tiene una cuenta registrada en ObraClick. Para mantener el histórico y la trazabilidad de tus obras, inicia sesión con la cuenta de tu empresa o activa el Plan PRO.`);
+    return {
+      success: false as const,
+      error: `El CIF/NIF (${cif}) ya tiene una cuenta registrada en ObraClick. Para mantener el histórico y la trazabilidad de tus obras, inicia sesión con la cuenta de tu empresa o activa el Plan PRO.`,
+    };
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   // CERROJO 2: Período de prueba de 14 días
-  const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+  const trialEndsAt = new Date(Date.now() + TRIAL_DURATION_MS);
 
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      cif,
-      companyName: companyName || name,
-      trialEndsAt,
-      plan: "FREE",
-      subscriptionStatus: "ACTIVE",
-    },
-  });
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        cif,
+        companyName: companyName || name,
+        trialEndsAt,
+        plan: "FREE",
+        subscriptionStatus: "ACTIVE",
+      },
+    });
 
-  if (user.email) {
-    sendWelcomeEmail(user.email, user.name || "Constructor").catch(() => {});
+    if (user.email) {
+      sendWelcomeEmail(user.email, user.name || "Constructor").catch(() => {});
+    }
+
+    return { success: true as const, email: user.email };
+  } catch (e) {
+    // P2002 = violación de unicidad (registro simultáneo con el mismo email o CIF)
+    if ((e as { code?: string })?.code === "P2002") {
+      return { success: false as const, error: "Ya existe una cuenta con ese correo electrónico o CIF/NIF" };
+    }
+    console.error("Error creando usuario:", e);
+    return { success: false as const, error: "No se pudo crear la cuenta. Inténtalo de nuevo en unos minutos." };
   }
-
-  return { success: true, email: user.email };
 }
 
 // ================= GDPR & COMPLIANCE =================
@@ -738,6 +917,10 @@ export async function exportUserData() {
       role: true,
       plan: true,
       subscriptionStatus: true,
+      companyName: true,
+      cif: true,
+      createdAt: true,
+      trialEndsAt: true,
       projects: {
         include: {
           milestones: true,

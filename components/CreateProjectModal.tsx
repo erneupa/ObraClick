@@ -15,20 +15,22 @@ export default function CreateProjectModal() {
     setLoading(true);
     const formData = new FormData(e.currentTarget);
     try {
-      await createProject(formData);
-      setIsOpen(false);
-    } catch (err: any) {
-      if (err.message && err.message.includes("TRIAL_EXPIRED")) {
+      const result = await createProject(formData);
+      if (result.ok) {
+        setIsOpen(false);
+      } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para crear nuevas obras y certificar proyectos.");
         setShowUpgradeModal(true);
-      } else if (err.message && err.message.includes("PLAN_LIMIT_PROJECTS")) {
+      } else if (result.code === "PLAN_LIMIT_PROJECTS") {
         setIsOpen(false);
         setUpgradeReason("Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a ObraClick PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras.");
         setShowUpgradeModal(true);
       } else {
-        alert(err.message || "Error al crear la obra");
+        alert(result.error);
       }
+    } catch {
+      alert("Error al crear la obra. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }

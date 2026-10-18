@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import CookieBanner from "@/components/CookieBanner";
+import { getSiteUrl } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://obraclick.com";
+const siteUrl = getSiteUrl();
 
 export const viewport: Viewport = {
   themeColor: "#0b0f19",
@@ -131,13 +132,9 @@ const jsonLdSoftwareApp = {
   softwareVersion: "2.0",
   description:
     "Software para gestión y control integral de obras y reformas: partes diarios, desviaciones presupuestarias, certificaciones e incidencias.",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "1450",
-    bestRating: "5",
-    worstRating: "1",
-  },
+  // Sin aggregateRating: valoraciones inventadas en datos estructurados incumplen las
+  // directrices de Google y pueden ser consideradas publicidad engañosa. Añádelo solo
+  // cuando tengas reseñas reales y verificables.
   offers: [
     {
       "@type": "Offer",
