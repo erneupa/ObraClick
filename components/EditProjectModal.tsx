@@ -40,16 +40,18 @@ export default function EditProjectModal({ project }: EditProjectModalProps) {
     const formData = new FormData(e.currentTarget);
     formData.append("projectId", project.id);
     try {
-      await updateProject(formData);
-      setIsOpen(false);
-    } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      const result = await updateProject(formData);
+      if (result.ok) {
+        setIsOpen(false);
+      } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba ha finalizado. Actualiza al Plan PRO para modificar los datos de tus obras.");
         setShowUpgradeModal(true);
       } else {
-        alert(err.message || "Error al actualizar la obra");
+        alert(result.error);
       }
+    } catch {
+      alert("Error al actualizar la obra. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }

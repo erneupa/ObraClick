@@ -38,13 +38,18 @@ export const authOptions: NextAuthOptions = {
           where: { email },
         });
 
+        // Mismo mensaje para "no existe", "cuenta de Google" y "contraseña incorrecta":
+        // así no se puede averiguar qué correos están registrados.
+        const invalidMessage =
+          "Correo o contraseña incorrectos. Si te registraste con Google, usa «Continuar con Google».";
+
         if (!user || !user.password) {
-          throw new Error("Usuario no encontrado o registrado con Google");
+          throw new Error(invalidMessage);
         }
 
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) {
-          throw new Error("Contraseña incorrecta");
+          throw new Error(invalidMessage);
         }
 
         return user;
@@ -109,5 +114,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: true,
+  // Las trazas de depuración de NextAuth solo en desarrollo (en producción exponen datos de sesión en los logs)
+  debug: process.env.NODE_ENV !== "production",
 };

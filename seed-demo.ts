@@ -144,4 +144,11 @@ async function main() {
   console.log("Seed completed successfully! Project ID:", project.id);
 }
 
-main().catch(console.error);
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

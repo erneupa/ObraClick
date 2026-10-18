@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
             value: "nosniff",
           },
           {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+          {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
           },

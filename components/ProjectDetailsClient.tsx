@@ -111,7 +111,7 @@ export default function ProjectDetailsClient({
     try {
       await toggleMilestone(milestoneId, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para seguir actualizando hitos y avances.");
         setShowUpgradeModal(true);
         return;
@@ -130,7 +130,7 @@ export default function ProjectDetailsClient({
       await addMilestone(formData);
       (e.target as HTMLFormElement).reset();
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para añadir nuevos hitos y fases de obra.");
         setShowUpgradeModal(true);
         return;
@@ -159,7 +159,7 @@ export default function ProjectDetailsClient({
       setReportImage(null);
       setReportSignature(null);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para seguir registrando partes diarios con fotos y firmas.");
         setShowUpgradeModal(true);
         return;
@@ -180,7 +180,7 @@ export default function ProjectDetailsClient({
       await addIncident(formData);
       (e.target as HTMLFormElement).reset();
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para registrar y resolver incidencias.");
         setShowUpgradeModal(true);
         return;
@@ -196,7 +196,7 @@ export default function ProjectDetailsClient({
     try {
       await resolveIncident(incidentId, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para gestionar incidencias.");
         setShowUpgradeModal(true);
         return;
@@ -215,7 +215,7 @@ export default function ProjectDetailsClient({
       await addExpense(formData);
       (e.target as HTMLFormElement).reset();
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para controlar partidas presupuestarias y gastos.");
         setShowUpgradeModal(true);
         return;
@@ -241,7 +241,7 @@ export default function ProjectDetailsClient({
     try {
       await deleteMilestone(id, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar hitos.");
         setShowUpgradeModal(true);
         return;
@@ -259,7 +259,7 @@ export default function ProjectDetailsClient({
       await updateMilestone(formData);
       setEditingMilestone(null);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar hitos.");
         setShowUpgradeModal(true);
         return;
@@ -276,7 +276,7 @@ export default function ProjectDetailsClient({
     try {
       await deleteDailyReport(id, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar partes diarios.");
         setShowUpgradeModal(true);
         return;
@@ -302,7 +302,7 @@ export default function ProjectDetailsClient({
       setEditReportImage(undefined);
       setEditReportSignature(undefined);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar partes diarios.");
         setShowUpgradeModal(true);
         return;
@@ -319,7 +319,7 @@ export default function ProjectDetailsClient({
     try {
       await deleteIncident(id, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar incidencias.");
         setShowUpgradeModal(true);
         return;
@@ -337,7 +337,7 @@ export default function ProjectDetailsClient({
       await updateIncident(formData);
       setEditingIncident(null);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar incidencias.");
         setShowUpgradeModal(true);
         return;
@@ -354,7 +354,7 @@ export default function ProjectDetailsClient({
     try {
       await deleteExpense(id, project.id);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar gastos.");
         setShowUpgradeModal(true);
         return;
@@ -372,7 +372,7 @@ export default function ProjectDetailsClient({
       await updateExpense(formData);
       setEditingExpense(null);
     } catch (err: any) {
-      if (err?.message?.includes("TRIAL_EXPIRED")) {
+      if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar gastos.");
         setShowUpgradeModal(true);
         return;

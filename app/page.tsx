@@ -2,10 +2,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import LandingHeader from "@/components/LandingHeader";
+import { getSiteUrl } from "@/lib/site";
 
 export const instant = false;
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://obraclick.com";
+const siteUrl = getSiteUrl();
 
 const jsonLdFaq = {
   "@context": "https://schema.org",

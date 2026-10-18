@@ -25,3 +25,17 @@ services:
           property: connectionString
       - key: NEXTAUTH_SECRET
         generateValue: true
+      # URL pública de la app (p. ej. https://obraclick.onrender.com o tu dominio propio).
+      # Se usa para sitemap, SEO y enlaces de los emails. Render la pedirá al crear el Blueprint.
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      # Opcionales: inicio de sesión con Google y emails (Resend)
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      # Tu email de propietario: único que puede activarse PRO sin pasarela de pago
+      - key: ADMIN_EMAIL
+        sync: false

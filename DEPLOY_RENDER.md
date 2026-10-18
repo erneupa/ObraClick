@@ -57,8 +57,32 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
 ## ¿Qué hace automáticamente el comando `build:render`?
 1. Ejecuta `node scripts/switch-db.js postgresql` para adaptar Prisma a PostgreSQL en el contenedor de Render.
 2. Ejecuta `prisma generate` para crear el cliente de base de datos nativo para Linux.
-3. Ejecuta `prisma db push --accept-data-loss` para crear todas las tablas automáticamente en la base de datos de Render.
+3. Ejecuta `prisma db push` para crear/actualizar las tablas en la base de datos de Render. Se ejecuta **sin** `--accept-data-loss`: si un cambio del esquema pudiera borrar datos, el despliegue falla en lugar de eliminarlos en silencio.
 4. Ejecuta `next build` para compilar el frontend optimizado para producción.
+
+---
+
+## Variables de entorno
+
+| Variable | Obligatoria | Para qué sirve |
+|---|---|---|
+| `DATABASE_URL` | Sí | La rellena Render automáticamente desde la base de datos del Blueprint |
+| `NEXTAUTH_SECRET` | Sí | La genera Render automáticamente |
+| `NEXT_PUBLIC_APP_URL` | Recomendada | URL pública (`https://tu-app.onrender.com` o tu dominio). Se usa en sitemap, SEO y enlaces de emails. **Defínela antes del build** (las variables `NEXT_PUBLIC_*` se fijan al compilar) |
+| `ADMIN_EMAIL` | Recomendada | Tu email: la única cuenta que puede activarse PRO sin pago (mientras no haya pasarela de pago) |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Opcional | Inicio de sesión con Google |
+| `RESEND_API_KEY` / `EMAIL_FROM` | Opcional | Envío real de emails (el dominio de `EMAIL_FROM` debe estar verificado en Resend) |
+| `ALLOW_FREE_PRO_UPGRADE` | No | Solo `true` en un entorno de demo: permite a **cualquier** usuario pasar a PRO gratis |
+
+---
+
+## ⚠️ Límites del plan gratuito de Render
+
+Según la [documentación oficial de Render](https://render.com/docs/free):
+- La **base de datos PostgreSQL gratuita caduca a los 30 días** de su creación y, pasados 14 días más sin mejorarla de plan, Render la elimina con todos sus datos. No tiene copias de seguridad.
+- El servicio web gratuito se **suspende tras 15 minutos sin tráfico** (la primera visita después tarda en responder).
+
+Para usar ObraClick con clientes reales, pasa la base de datos (y el servicio web) a un plan de pago antes de que caduque.
 
 ---
 

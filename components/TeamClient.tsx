@@ -18,22 +18,25 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
     try {
-      await addTeamMember(formData);
-      setIsOpen(false);
-      (e.target as HTMLFormElement).reset();
-    } catch (err: any) {
-      if (err.message && err.message.includes("TRIAL_EXPIRED")) {
+      const result = await addTeamMember(formData);
+      if (result.ok) {
+        setIsOpen(false);
+        form.reset();
+      } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para coordinar equipos y asignar cuadrillas.");
         setShowUpgradeModal(true);
-      } else if (err.message && err.message.includes("PLAN_LIMIT_TEAM")) {
+      } else if (result.code === "PLAN_LIMIT_TEAM") {
         setIsOpen(false);
         setUpgradeReason("Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a ObraClick PRO para añadir cuadrillas y subcontratistas ilimitados.");
         setShowUpgradeModal(true);
       } else {
-        alert(err.message || "Error al añadir miembro al equipo");
+        alert(result.error);
       }
+    } catch {
+      alert("Error al añadir miembro al equipo. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }

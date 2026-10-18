@@ -1,6 +1,18 @@
 // Servicio de Emails Transaccionales para ObraClick
 // Compatible con Resend API y modo desarrollo/simulación
 
+import { getSiteUrl } from "./site";
+
+/** Escapa texto del usuario antes de insertarlo en una plantilla HTML. */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 interface SendEmailParams {
   to: string;
   subject: string;
@@ -49,7 +61,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
 
 // 1. Email de Bienvenida
 export async function sendWelcomeEmail(to: string, userName: string) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://obraclick.es";
+  const appUrl = getSiteUrl();
   const html = `
     <!DOCTYPE html>
     <html>
@@ -61,7 +73,7 @@ export async function sendWelcomeEmail(to: string, userName: string) {
             <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Control & Certificación de Obras en la Nube</p>
           </div>
 
-          <h2 style="color: #ffffff; font-size: 20px;">¡Bienvenido a ObraClick, ${userName}!</h2>
+          <h2 style="color: #ffffff; font-size: 20px;">¡Bienvenido a ObraClick, ${escapeHtml(userName)}!</h2>
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
             Tu cuenta ha sido creada con éxito. Ya puedes gestionar tus obras, crear partes diarios con fotos en tiempo real y controlar presupuestos con alertas de sobrecostes.
           </p>
@@ -105,7 +117,7 @@ export async function sendUrgentIncidentEmail(
   priority: string,
   assignedTo?: string | null
 ) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://obraclick.es";
+  const appUrl = getSiteUrl();
   const html = `
     <!DOCTYPE html>
     <html>
@@ -116,17 +128,17 @@ export async function sendUrgentIncidentEmail(
             <span style="font-size: 28px;">🚨</span>
             <div>
               <h2 style="color: #ef4444; font-size: 20px; margin: 0;">ALERTA DE INCIDENCIA EN OBRA</h2>
-              <span style="color: #94a3b8; font-size: 13px;">Proyecto: <strong>${projectName}</strong></span>
+              <span style="color: #94a3b8; font-size: 13px;">Proyecto: <strong>${escapeHtml(projectName)}</strong></span>
             </div>
           </div>
 
           <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 18px; margin: 20px 0;">
             <div style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px;">
-              ${incidentTitle}
+              ${escapeHtml(incidentTitle)}
             </div>
             <div style="font-size: 13px; color: #cbd5e1;">
-              <strong>Prioridad:</strong> <span style="color: #f87171; font-weight: 700;">${priority}</span><br />
-              <strong>Responsable asignado:</strong> ${assignedTo || "Sin asignar"}
+              <strong>Prioridad:</strong> <span style="color: #f87171; font-weight: 700;">${escapeHtml(priority)}</span><br />
+              <strong>Responsable asignado:</strong> ${escapeHtml(assignedTo || "Sin asignar")}
             </div>
           </div>
 
@@ -153,7 +165,7 @@ export async function sendUrgentIncidentEmail(
 
 // 3. Aviso de Prueba por Expirar
 export async function sendTrialExpiringEmail(to: string, userName: string, daysLeft: number) {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://obraclick.es";
+  const appUrl = getSiteUrl();
   const html = `
     <!DOCTYPE html>
     <html>
@@ -162,7 +174,7 @@ export async function sendTrialExpiringEmail(to: string, userName: string, daysL
         <div style="max-width: 600px; margin: 0 auto; background: #131d31; border: 1px solid #f59e0b; border-radius: 16px; padding: 36px;">
           <h2 style="color: #f59e0b; font-size: 20px; margin-top: 0;">⏳ Tu prueba gratuita en ObraClick finaliza en ${daysLeft} días</h2>
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
-            Hola ${userName}, tu período de evaluación de 14 días está a punto de concluir. Para seguir certificando obras sin marca de agua y con almacenamiento ilimitado de partes diarios, activa el Plan PRO.
+            Hola ${escapeHtml(userName)}, tu período de evaluación de 14 días está a punto de concluir. Para seguir certificando obras sin marca de agua y con almacenamiento ilimitado de partes diarios, activa el Plan PRO.
           </p>
           <div style="text-align: center; margin: 28px 0;">
             <a href="${appUrl}/dashboard" style="background: #f59e0b; color: #000; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">

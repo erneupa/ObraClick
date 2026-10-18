@@ -25,6 +25,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -33,6 +34,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -89,6 +92,8 @@ model Project {
 
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+
+  @@index([userId])
 }
 
 model Milestone {
@@ -101,6 +106,8 @@ model Milestone {
   projectId   String
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
+
+  @@index([projectId])
 }
 
 model DailyReport {
@@ -114,6 +121,8 @@ model DailyReport {
   projectId    String
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
+
+  @@index([projectId])
 }
 
 model Incident {
@@ -126,6 +135,8 @@ model Incident {
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
+
+  @@index([projectId])
 }
 
 model Expense {
@@ -140,6 +151,8 @@ model Expense {
   projectId     String
   project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
+
+  @@index([projectId])
 }
 
 model TeamMember {
@@ -153,4 +166,6 @@ model TeamMember {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }

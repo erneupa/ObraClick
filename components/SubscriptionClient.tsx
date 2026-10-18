@@ -34,7 +34,11 @@ export default function SubscriptionClient({
     setLoading("upgrade");
     setFeedback(null);
     try {
-      await upgradeToPro();
+      const result = await upgradeToPro();
+      if (!result.ok) {
+        setFeedback({ type: "error", message: result.error });
+        return;
+      }
       setFeedback({
         type: "success",
         message: "¡Plan PRO activado con éxito! Todas las limitaciones de obras y equipo han sido eliminadas."
@@ -42,10 +46,10 @@ export default function SubscriptionClient({
       setTimeout(() => {
         window.location.reload();
       }, 1200);
-    } catch (err: any) {
+    } catch {
       setFeedback({
         type: "error",
-        message: err.message || "Error al procesar el cambio de plan"
+        message: "Error al procesar el cambio de plan. Inténtalo de nuevo."
       });
     } finally {
       setLoading(null);
