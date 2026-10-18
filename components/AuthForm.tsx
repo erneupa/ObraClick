@@ -1,29 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { registerUser } from "@/lib/actions";
 
+function getServerErrorMsg(serverError?: string): string | null {
+  if (!serverError) return null;
+  if (serverError === "Configuration") {
+    return "Error de configuración de Google: faltan las variables GOOGLE_CLIENT_ID o GOOGLE_CLIENT_SECRET en Render.";
+  } else if (serverError === "OAuthSignin" || serverError === "OAuthCallback") {
+    return "Error de sincronización con Google: comprueba que las URLs de redirección coincidan exactamente en Google Cloud Console.";
+  } else if (serverError === "AccessDenied") {
+    return "Acceso denegado: tu cuenta de Google no autorizó el acceso.";
+  } else {
+    return `Error de autenticación (${serverError}). Puedes crear una cuenta o entrar con correo y contraseña.`;
+  }
+}
+
 export default function AuthForm({ serverError }: { serverError?: string }) {
+  const router = useRouter();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() => getServerErrorMsg(serverError));
   const [success, setSuccess] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (serverError) {
-      if (serverError === "Configuration") {
-        setError("Error de configuración de Google: faltan las variables GOOGLE_CLIENT_ID o GOOGLE_CLIENT_SECRET en Render.");
-      } else if (serverError === "OAuthSignin" || serverError === "OAuthCallback") {
-        setError("Error de sincronización con Google: comprueba que las URLs de redirección coincidan exactamente en Google Cloud Console.");
-      } else if (serverError === "AccessDenied") {
-        setError("Acceso denegado: tu cuenta de Google no autorizó el acceso.");
-      } else {
-        setError(`Error de autenticación (${serverError}). Puedes crear una cuenta o entrar con correo y contraseña.`);
-      }
-    }
-  }, [serverError]);
 
   // Form states
   const [email, setEmail] = useState("");
@@ -51,10 +52,11 @@ export default function AuthForm({ serverError }: { serverError?: string }) {
         setError(res.error);
       } else {
         setSuccess("¡Acceso correcto! Entrando al panel...");
-        window.location.href = "/dashboard";
+        router.push("/dashboard");
+        router.refresh();
       }
-    } catch (err: any) {
-      setError(err.message || "Error al iniciar sesión");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Error al iniciar sesión");
     } finally {
       setLoading(false);
     }
@@ -104,10 +106,11 @@ export default function AuthForm({ serverError }: { serverError?: string }) {
         setError("Cuenta creada, pero hubo un error al iniciar sesión automática. Por favor entra con tus datos.");
         setMode("login");
       } else {
-        window.location.href = "/dashboard";
+        router.push("/dashboard");
+        router.refresh();
       }
-    } catch (err: any) {
-      setError(err.message || "Error al crear la cuenta");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Error al crear la cuenta");
     } finally {
       setLoading(false);
     }

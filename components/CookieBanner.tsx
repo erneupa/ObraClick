@@ -1,31 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 
-export default function CookieBanner() {
-  const [mounted, setMounted] = useState(false);
-  const [visible, setVisible] = useState(false);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-    const consent = localStorage.getItem("obraclick_cookie_consent");
-    if (!consent) {
-      setVisible(true);
-    }
-  }, []);
+export default function CookieBanner() {
+  const isMounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
+  const initialConsent = useSyncExternalStore(
+    emptySubscribe,
+    () => localStorage.getItem("obraclick_cookie_consent"),
+    () => "server"
+  );
+
+  const [dismissed, setDismissed] = useState(false);
 
   function handleAcceptAll() {
     localStorage.setItem("obraclick_cookie_consent", "all");
-    setVisible(false);
+    setDismissed(true);
   }
 
   function handleAcceptEssential() {
     localStorage.setItem("obraclick_cookie_consent", "essential");
-    setVisible(false);
+    setDismissed(true);
   }
 
-  if (!mounted || !visible) return null;
+  if (!isMounted || initialConsent || dismissed) return null;
 
   return (
     <div style={{

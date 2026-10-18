@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { upgradeToPro } from "@/lib/actions";
+import { toast } from "./ToastProvider";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -20,15 +21,16 @@ export default function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalPr
     try {
       const result = await upgradeToPro();
       if (!result.ok) {
-        alert(result.error);
+        toast(result.error, "error");
         return;
       }
       setSuccess(true);
+      toast("¡Plan PRO activado con éxito!", "success");
       setTimeout(() => {
         window.location.reload();
       }, 1500);
     } catch {
-      alert("Error al actualizar la suscripción. Inténtalo de nuevo.");
+      toast("Error al actualizar la suscripción. Inténtalo de nuevo.", "error");
     } finally {
       setLoading(false);
     }

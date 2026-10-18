@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const instant = false;
@@ -37,7 +38,6 @@ export default async function ClientPortalPage({
       milestones: { orderBy: { order: "asc" } },
       dailyReports: { orderBy: { createdAt: "desc" }, take: 20 },
       incidents: { orderBy: { createdAt: "desc" } },
-      expenses: { orderBy: { date: "desc" } },
     },
   });
 
@@ -48,7 +48,6 @@ export default async function ClientPortalPage({
   const completedMilestones = project.milestones.filter((m) => m.completed).length;
   const totalMilestones = project.milestones.length;
   const openIncidents = project.incidents.filter((i) => i.status !== "RESUELTA").length;
-  const totalExpenses = project.expenses.reduce((sum, e) => sum + e.amount, 0);
 
   const statusLabels: Record<string, { label: string; color: string; bg: string }> = {
     PLANIFICACION: { label: "📋 En Planificación", color: "#60a5fa", bg: "rgba(96,165,250,0.15)" },
@@ -173,7 +172,7 @@ export default async function ClientPortalPage({
           }}>
             <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px" }}>Gasto Ejecutado</div>
             <div style={{ fontSize: "28px", fontWeight: "800", color: "#10b981" }}>
-              {totalExpenses.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+              {project.spent.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
             </div>
           </div>
           <div style={{
@@ -366,7 +365,7 @@ export default async function ClientPortalPage({
             Portal de seguimiento generado por <strong style={{ color: "#94a3b8" }}>ObraClick</strong>
           </p>
           <p style={{ margin: 0 }}>
-            Software de gestión de obras · <a href="/" style={{ color: "#3b82f6", textDecoration: "underline" }}>obraclick.com</a>
+            Software de gestión de obras · <Link href="/" style={{ color: "#3b82f6", textDecoration: "underline" }}>obraclick.com</Link>
           </p>
         </div>
       </main>

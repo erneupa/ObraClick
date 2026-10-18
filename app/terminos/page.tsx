@@ -52,7 +52,7 @@ export default function TerminosPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>1. Objeto y Ámbito de Aplicación</h2>
               <p style={{ margin: 0 }}>
-                Las presentes Condiciones Generales regulan el acceso y uso de la plataforma digital ObraClick (el "Servicio"), ofrecida por el equipo titular de ObraClick como solución de software en la nube dirigida a profesionales de la construcción, reformas, arquitectura, promotoras e ingenierías (B2B), así como a usuarios del sector.
+                Las presentes Condiciones Generales regulan el acceso y uso de la plataforma digital ObraClick (el &quot;Servicio&quot;), ofrecida por el equipo titular de ObraClick como solución de software en la nube dirigida a profesionales de la construcción, reformas, arquitectura, promotoras e ingenierías (B2B), así como a usuarios del sector.
               </p>
             </div>
 

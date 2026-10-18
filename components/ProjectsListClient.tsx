@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { deleteProject } from "@/lib/actions";
+import { toast } from "./ToastProvider";
 
 interface ProjectsListClientProps {
   projects: any[];
@@ -64,8 +65,9 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
     if (!confirm(`¿Seguro que deseas eliminar la obra "${projectName}"? Esta acción no se puede deshacer.`)) return;
     try {
       await deleteProject(projectId);
+      toast(`Obra "${projectName}" eliminada`, "info");
     } catch {
-      alert("Error al eliminar la obra");
+      toast("Error al eliminar la obra", "error");
     }
   }
 

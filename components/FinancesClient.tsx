@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addExpense } from "@/lib/actions";
+import { toast } from "./ToastProvider";
 
 interface FinancesClientProps {
   projects: any[];
@@ -18,7 +19,7 @@ export default function FinancesClient({ projects, expenses, totalBudget, totalS
 
   function exportToCSV() {
     if (filteredExpenses.length === 0) {
-      alert("No hay gastos para exportar con los filtros actuales");
+      toast("No hay gastos para exportar con los filtros actuales", "info");
       return;
     }
 
@@ -43,6 +44,7 @@ export default function FinancesClient({ projects, expenses, totalBudget, totalS
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    toast("Archivo CSV de gastos descargado con éxito", "success");
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -53,8 +55,9 @@ export default function FinancesClient({ projects, expenses, totalBudget, totalS
       await addExpense(formData);
       setIsOpen(false);
       (e.target as HTMLFormElement).reset();
-    } catch (err) {
-      alert("Error al registrar el gasto");
+      toast("Gasto registrado y balance actualizado", "success");
+    } catch {
+      toast("Error al registrar el gasto", "error");
     } finally {
       setLoading(false);
     }

@@ -43,10 +43,11 @@ export default async function DashboardPage() {
   ).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
 
   const isPro = dbUser?.plan === "PRO" || dbUser?.plan === "ENTERPRISE";
-  const trialEndsAt = dbUser?.trialEndsAt || (!isPro ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) : null);
-  const isTrialExpired = !isPro && trialEndsAt ? new Date() > new Date(trialEndsAt) : false;
+  const trialEndsAt = dbUser?.trialEndsAt ?? null;
+  const now = new Date();
+  const isTrialExpired = !isPro && trialEndsAt ? now > new Date(trialEndsAt) : false;
   const trialDaysRemaining = !isPro && trialEndsAt 
-    ? Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(0, Math.ceil((new Date(trialEndsAt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
     : null;
 
   return (
@@ -285,7 +286,7 @@ export default async function DashboardPage() {
 
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)", fontSize: "13px" }}>
                       <span className="text-secondary">
-                        Gastado: <strong style={{ color: "#fff" }}>{p.spent.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong> / {p.budget.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                        Gastado: <strong style={{ color: "#fff" }}>{p.spent.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}</strong> / {p.budget.toLocaleString("es-ES", { style: "currency", currency: "EUR" })} {p.budget > 0 && <span style={{ color: spentPercentage > 90 ? "#f87171" : "var(--text-secondary)" }}>({spentPercentage}%)</span>}
                       </span>
                       <span style={{ color: "var(--accent-primary)", fontWeight: "600" }}>
                         Ver Detalles →

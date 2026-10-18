@@ -4,6 +4,8 @@ import { useState } from "react";
 import { addTeamMember, deleteTeamMember } from "@/lib/actions";
 import UpgradeModal from "./UpgradeModal";
 
+import { toast } from "./ToastProvider";
+
 interface TeamClientProps {
   initialMembers: any[];
 }
@@ -24,6 +26,7 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
       if (result.ok) {
         setIsOpen(false);
         form.reset();
+        toast("Colaborador añadido al equipo", "success");
       } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para coordinar equipos y asignar cuadrillas.");
@@ -33,10 +36,10 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
         setUpgradeReason("Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a ObraClick PRO para añadir cuadrillas y subcontratistas ilimitados.");
         setShowUpgradeModal(true);
       } else {
-        alert(result.error);
+        toast(result.error || "Datos no válidos", "error");
       }
     } catch {
-      alert("Error al añadir miembro al equipo. Inténtalo de nuevo.");
+      toast("Error al añadir miembro al equipo. Inténtalo de nuevo.", "error");
     } finally {
       setLoading(false);
     }
@@ -46,8 +49,9 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
     if (!confirm("¿Seguro que deseas eliminar a este colaborador?")) return;
     try {
       await deleteTeamMember(memberId);
-    } catch (err) {
-      alert("Error al eliminar");
+      toast("Colaborador eliminado", "info");
+    } catch {
+      toast("Error al eliminar", "error");
     }
   }
 

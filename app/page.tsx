@@ -459,7 +459,7 @@ export default async function HomePage() {
               <div style={{ fontSize: "26px", marginBottom: "8px" }}>🏪</div>
               <h3 style={{ fontSize: "18px", margin: "0 0 8px", color: "#fff" }}>Locales Comerciales & Retail</h3>
               <p className="text-secondary" style={{ fontSize: "14px", lineHeight: "1.6", margin: 0 }}>
-                Obras 'llave en mano' con hitos diarios rigurosos, coordinación simultánea de gremios técnicos y verificación fotográfica de acabados.
+                Obras «llave en mano» con hitos diarios rigurosos, coordinación simultánea de gremios técnicos y verificación fotográfica de acabados.
               </p>
             </div>
 

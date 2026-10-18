@@ -4,6 +4,7 @@ import { useState } from "react";
 import { exportUserData, deleteUserAccount } from "@/lib/actions";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "./ToastProvider";
 
 export default function PrivacyGdprSettings() {
   const [downloading, setDownloading] = useState(false);
@@ -21,8 +22,9 @@ export default function PrivacyGdprSettings() {
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-    } catch (err: any) {
-      alert(err.message || "Error al exportar los datos");
+      toast("Archivo JSON con tus datos descargado correctamente", "success");
+    } catch (err: unknown) {
+      toast(err instanceof Error ? err.message : "Error al exportar los datos", "error");
     } finally {
       setDownloading(false);
     }
@@ -32,10 +34,10 @@ export default function PrivacyGdprSettings() {
     setDeleting(true);
     try {
       await deleteUserAccount();
-      alert("Tu cuenta y todos tus datos han sido eliminados conforme al RGPD.");
+      toast("Tu cuenta y todos tus datos han sido eliminados conforme al RGPD.", "info");
       signOut({ callbackUrl: "/" });
-    } catch (err: any) {
-      alert(err.message || "Error al eliminar la cuenta");
+    } catch (err: unknown) {
+      toast(err instanceof Error ? err.message : "Error al eliminar la cuenta", "error");
       setDeleting(false);
     }
   }

@@ -362,7 +362,9 @@ export async function addMilestone(formData: FormData) {
   const title = readText(formData.get("title"), 150);
   const description = readText(formData.get("description"), 500);
 
-  if (!title) return;
+  if (!title) {
+    throw new Error("El título del hito constructivo es obligatorio");
+  }
 
   // Mantener el orden: el nuevo hito va al final
   const last = await prisma.milestone.aggregate({
@@ -397,7 +399,9 @@ export async function updateMilestone(formData: FormData) {
   const title = readText(formData.get("title"), 150);
   const description = readText(formData.get("description"), 500);
 
-  if (!title) return;
+  if (!title) {
+    throw new Error("El título del hito constructivo es obligatorio");
+  }
 
   await prisma.milestone.updateMany({
     where: { id: milestoneId, projectId },
@@ -445,7 +449,9 @@ export async function addDailyReport(formData: FormData) {
       ? validateImageData(signatureRaw, MAX_SIGNATURE_CHARS, "La firma")
       : null;
 
-  if (!title || !notes) return;
+  if (!title || !notes) {
+    throw new Error("El título y las notas descriptivas del parte diario son obligatorios");
+  }
 
   await prisma.dailyReport.create({
     data: {
@@ -476,7 +482,9 @@ export async function updateDailyReport(formData: FormData) {
   const imageRaw = formData.get("imageUrl");
   const signatureRaw = formData.get("signatureUrl");
 
-  if (!title || !notes) return;
+  if (!title || !notes) {
+    throw new Error("El título y las notas descriptivas del parte diario son obligatorios");
+  }
 
   const dataToUpdate: {
     title: string;
@@ -536,7 +544,9 @@ export async function addIncident(formData: FormData) {
   const priority = readChoice(formData.get("priority"), INCIDENT_PRIORITIES, "MEDIA");
   const assignedTo = readText(formData.get("assignedTo"), 100);
 
-  if (!title || !description) return;
+  if (!title || !description) {
+    throw new Error("El título y la descripción de la incidencia son obligatorios");
+  }
 
   await prisma.incident.create({
     data: {
@@ -572,7 +582,9 @@ export async function updateIncident(formData: FormData) {
   const status = readChoice(formData.get("status"), INCIDENT_STATUSES, "ABIERTA");
   const assignedTo = readText(formData.get("assignedTo"), 100);
 
-  if (!title || !description) return;
+  if (!title || !description) {
+    throw new Error("El título y la descripción de la incidencia son obligatorios");
+  }
 
   await prisma.incident.updateMany({
     where: { id: incidentId, projectId },
@@ -628,7 +640,12 @@ export async function addExpense(formData: FormData) {
   const invoiceNumber = readText(formData.get("invoiceNumber"), 50);
   const status = readChoice(formData.get("status"), EXPENSE_STATUSES, "PAGADO");
 
-  if (!concept || amount === null || amount <= 0) return;
+  if (!concept) {
+    throw new Error("El concepto del gasto o partida es obligatorio");
+  }
+  if (amount === null || amount <= 0) {
+    throw new Error("El importe del gasto debe ser un número válido superior a 0");
+  }
 
   await prisma.expense.create({
     data: {
@@ -662,7 +679,12 @@ export async function updateExpense(formData: FormData) {
   const invoiceNumber = readText(formData.get("invoiceNumber"), 50);
   const status = readChoice(formData.get("status"), EXPENSE_STATUSES, "PAGADO");
 
-  if (!concept || amount === null || amount <= 0) return;
+  if (!concept) {
+    throw new Error("El concepto del gasto o partida es obligatorio");
+  }
+  if (amount === null || amount <= 0) {
+    throw new Error("El importe del gasto debe ser un número válido superior a 0");
+  }
 
   await prisma.expense.updateMany({
     where: { id: expenseId, projectId },

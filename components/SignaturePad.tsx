@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { toast } from "./ToastProvider";
 
 interface SignaturePadProps {
   onSave: (signatureDataUrl: string) => void;
@@ -103,7 +104,7 @@ export default function SignaturePad({
   function handleConfirm() {
     const canvas = canvasRef.current;
     if (!canvas || !hasSignature) {
-      alert("Por favor, dibuje su firma antes de confirmar.");
+      toast("Por favor, dibuje su firma antes de confirmar.", "info");
       return;
     }
     const dataUrl = canvas.toDataURL("image/png");

@@ -28,6 +28,7 @@ import {
 import UpgradeModal from "@/components/UpgradeModal";
 import EditProjectModal from "@/components/EditProjectModal";
 import SignaturePad from "@/components/SignaturePad";
+import { toast } from "@/components/ToastProvider";
 
 function compressImage(file: File, maxDimension = 1280, quality = 0.8): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -110,13 +111,14 @@ export default function ProjectDetailsClient({
   async function handleToggleMilestone(milestoneId: string) {
     try {
       await toggleMilestone(milestoneId, project.id);
+      toast("Hito constructivo actualizado", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para seguir actualizando hitos y avances.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error actualizando hito");
+      toast("Error actualizando hito", "error");
     }
   }
 
@@ -129,13 +131,14 @@ export default function ProjectDetailsClient({
     try {
       await addMilestone(formData);
       (e.target as HTMLFormElement).reset();
+      toast("Nuevo hito constructivo añadido", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para añadir nuevos hitos y fases de obra.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al añadir hito");
+      toast("Error al añadir hito", "error");
     } finally {
       setLoading(false);
     }
@@ -158,13 +161,14 @@ export default function ProjectDetailsClient({
       (e.target as HTMLFormElement).reset();
       setReportImage(null);
       setReportSignature(null);
+      toast("Parte diario registrado y certificado", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para seguir registrando partes diarios con fotos y firmas.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al añadir parte diario");
+      toast("Error al añadir parte diario", "error");
     } finally {
       setLoading(false);
     }
@@ -179,13 +183,14 @@ export default function ProjectDetailsClient({
     try {
       await addIncident(formData);
       (e.target as HTMLFormElement).reset();
+      toast("Incidencia registrada correctamente", "info");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para registrar y resolver incidencias.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al registrar incidencia");
+      toast("Error al registrar incidencia", "error");
     } finally {
       setLoading(false);
     }
@@ -195,13 +200,14 @@ export default function ProjectDetailsClient({
   async function handleResolveIncident(incidentId: string) {
     try {
       await resolveIncident(incidentId, project.id);
+      toast("Incidencia marcada como resuelta", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para gestionar incidencias.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al resolver incidencia");
+      toast("Error al resolver incidencia", "error");
     }
   }
 
@@ -214,13 +220,14 @@ export default function ProjectDetailsClient({
     try {
       await addExpense(formData);
       (e.target as HTMLFormElement).reset();
+      toast("Gasto registrado y balance actualizado", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para controlar partidas presupuestarias y gastos.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al registrar gasto");
+      toast("Error al registrar gasto", "error");
     } finally {
       setLoading(false);
     }
@@ -230,8 +237,9 @@ export default function ProjectDetailsClient({
   async function handleStatusChange(status: string) {
     try {
       await updateProjectStatus(project.id, status);
-    } catch (err) {
-      alert("Error actualizando estado");
+      toast("Estado de la obra actualizado", "success");
+    } catch {
+      toast("Error actualizando estado", "error");
     }
   }
 
@@ -240,13 +248,14 @@ export default function ProjectDetailsClient({
     if (!confirm("¿Deseas eliminar este hito constructivo?")) return;
     try {
       await deleteMilestone(id, project.id);
+      toast("Hito eliminado", "info");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar hitos.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al eliminar hito");
+      toast("Error al eliminar hito", "error");
     }
   }
 
@@ -258,13 +267,14 @@ export default function ProjectDetailsClient({
     try {
       await updateMilestone(formData);
       setEditingMilestone(null);
+      toast("Hito actualizado correctamente", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar hitos.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al actualizar hito");
+      toast("Error al actualizar hito", "error");
     } finally {
       setLoading(false);
     }
@@ -275,13 +285,14 @@ export default function ProjectDetailsClient({
     if (!confirm("¿Deseas eliminar este parte de obra?")) return;
     try {
       await deleteDailyReport(id, project.id);
+      toast("Parte de obra eliminado", "info");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar partes diarios.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al eliminar parte de obra");
+      toast("Error al eliminar parte de obra", "error");
     }
   }
 
@@ -301,13 +312,14 @@ export default function ProjectDetailsClient({
       setEditingDailyReport(null);
       setEditReportImage(undefined);
       setEditReportSignature(undefined);
+      toast("Parte diario actualizado", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar partes diarios.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al actualizar parte diario");
+      toast("Error al actualizar parte diario", "error");
     } finally {
       setLoading(false);
     }
@@ -318,13 +330,14 @@ export default function ProjectDetailsClient({
     if (!confirm("¿Deseas eliminar esta incidencia?")) return;
     try {
       await deleteIncident(id, project.id);
+      toast("Incidencia eliminada", "info");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar incidencias.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al eliminar incidencia");
+      toast("Error al eliminar incidencia", "error");
     }
   }
 
@@ -336,13 +349,14 @@ export default function ProjectDetailsClient({
     try {
       await updateIncident(formData);
       setEditingIncident(null);
+      toast("Incidencia actualizada", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar incidencias.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al actualizar incidencia");
+      toast("Error al actualizar incidencia", "error");
     } finally {
       setLoading(false);
     }
@@ -353,13 +367,14 @@ export default function ProjectDetailsClient({
     if (!confirm("¿Deseas eliminar este gasto o partida presupuestaria?")) return;
     try {
       await deleteExpense(id, project.id);
+      toast("Gasto eliminado", "info");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar gastos.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al eliminar gasto");
+      toast("Error al eliminar gasto", "error");
     }
   }
 
@@ -371,13 +386,14 @@ export default function ProjectDetailsClient({
     try {
       await updateExpense(formData);
       setEditingExpense(null);
+      toast("Gasto actualizado", "success");
     } catch (err: any) {
       if ((err?.message?.includes("TRIAL_EXPIRED") || isTrialExpired)) {
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para modificar gastos.");
         setShowUpgradeModal(true);
         return;
       }
-      alert("Error al actualizar gasto");
+      toast("Error al actualizar gasto", "error");
     } finally {
       setLoading(false);
     }
@@ -524,7 +540,7 @@ export default function ProjectDetailsClient({
                     onClick={() => {
                       const url = `${window.location.origin}/obra/${clientToken}`;
                       navigator.clipboard.writeText(url);
-                      alert("¡Enlace copiado al portapapeles!");
+                      toast("¡Enlace del portal copiado al portapapeles!", "success");
                     }}
                     className="btn-secondary"
                     style={{ padding: "5px 12px", fontSize: "12px", gap: "4px" }}
@@ -538,8 +554,12 @@ export default function ProjectDetailsClient({
                       try {
                         await revokeClientToken(project.id);
                         setClientToken(null);
-                      } catch { alert("Error"); }
-                      finally { setSharingLoading(false); }
+                        toast("Acceso al portal revocado correctamente", "info");
+                      } catch {
+                        toast("Error al revocar acceso", "error");
+                      } finally {
+                        setSharingLoading(false);
+                      }
                     }}
                     disabled={sharingLoading}
                     style={{ padding: "5px 12px", fontSize: "12px", color: "#f87171", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
@@ -556,9 +576,12 @@ export default function ProjectDetailsClient({
                       setClientToken(token);
                       const url = `${window.location.origin}/obra/${token}`;
                       navigator.clipboard.writeText(url);
-                      alert("¡Portal del cliente creado! Enlace copiado al portapapeles.");
-                    } catch { alert("Error al generar enlace"); }
-                    finally { setSharingLoading(false); }
+                      toast("¡Portal del cliente creado! Enlace copiado al portapapeles.", "success");
+                    } catch {
+                      toast("Error al generar enlace", "error");
+                    } finally {
+                      setSharingLoading(false);
+                    }
                   }}
                   disabled={sharingLoading}
                   className="btn-secondary"
@@ -594,8 +617,9 @@ export default function ProjectDetailsClient({
                     setExportingPdf(true);
                     try {
                       exportProjectCertificationPDF(project, isPro);
-                    } catch (err) {
-                      alert("Error al generar la certificación PDF");
+                      toast("Certificación oficial descargada en PDF", "success");
+                    } catch {
+                      toast("Error al generar la certificación PDF", "error");
                     } finally {
                       setExportingPdf(false);
                     }
@@ -629,8 +653,9 @@ export default function ProjectDetailsClient({
                     setExportingFullReport(true);
                     try {
                       exportProjectFullReportPDF(project, isPro);
-                    } catch (err) {
-                      alert("Error al generar el informe completo");
+                      toast("Informe técnico completo descargado en PDF", "success");
+                    } catch {
+                      toast("Error al generar el informe completo", "error");
                     } finally {
                       setExportingFullReport(false);
                     }
@@ -1031,8 +1056,9 @@ export default function ProjectDetailsClient({
                                   clientName: project.clientName,
                                   report: r,
                                 }, isPro);
+                                toast("Parte diario descargado en PDF", "success");
                               } catch {
-                                alert("Error al generar el PDF del parte");
+                                toast("Error al generar el PDF del parte", "error");
                               }
                             }}
                             title="Descargar este parte en PDF"

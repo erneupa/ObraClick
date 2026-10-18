@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateProject } from "@/lib/actions";
 import UpgradeModal from "./UpgradeModal";
+import { toast } from "./ToastProvider";
 
 interface EditProjectModalProps {
   project: {
@@ -43,15 +44,16 @@ export default function EditProjectModal({ project }: EditProjectModalProps) {
       const result = await updateProject(formData);
       if (result.ok) {
         setIsOpen(false);
+        toast("Obra actualizada correctamente", "success");
       } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba ha finalizado. Actualiza al Plan PRO para modificar los datos de tus obras.");
         setShowUpgradeModal(true);
       } else {
-        alert(result.error);
+        toast(result.error || "Datos no válidos", "error");
       }
     } catch {
-      alert("Error al actualizar la obra. Inténtalo de nuevo.");
+      toast("Error al actualizar la obra. Inténtalo de nuevo.", "error");
     } finally {
       setLoading(false);
     }

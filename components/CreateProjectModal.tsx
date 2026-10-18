@@ -4,6 +4,8 @@ import { useState } from "react";
 import { createProject } from "@/lib/actions";
 import UpgradeModal from "./UpgradeModal";
 
+import { toast } from "./ToastProvider";
+
 export default function CreateProjectModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,7 @@ export default function CreateProjectModal() {
       const result = await createProject(formData);
       if (result.ok) {
         setIsOpen(false);
+        toast("¡Obra creada con éxito!", "success");
       } else if (result.code === "TRIAL_EXPIRED") {
         setIsOpen(false);
         setUpgradeReason("Tu período de prueba de 14 días ha finalizado. Actualiza al Plan PRO para crear nuevas obras y certificar proyectos.");
@@ -27,10 +30,10 @@ export default function CreateProjectModal() {
         setUpgradeReason("Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a ObraClick PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras.");
         setShowUpgradeModal(true);
       } else {
-        alert(result.error);
+        toast(result.error || "Datos no válidos", "error");
       }
     } catch {
-      alert("Error al crear la obra. Inténtalo de nuevo.");
+      toast("Error al crear la obra. Inténtalo de nuevo.", "error");
     } finally {
       setLoading(false);
     }
