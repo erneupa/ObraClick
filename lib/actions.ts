@@ -941,8 +941,8 @@ export async function requestPasswordReset(formData: FormData) {
       select: { id: true, name: true, email: true, password: true },
     });
 
-    // Solo enviamos enlace si el usuario existe y tiene contraseña asignada (no cuentas OAuth exclusivas)
-    if (user && user.password && user.email) {
+    // Enviamos enlace a cualquier usuario registrado (permite también añadir contraseña a cuentas de Google)
+    if (user && user.email) {
       // Limpiar tokens anteriores para este email
       await prisma.verificationToken.deleteMany({
         where: { identifier: email },
