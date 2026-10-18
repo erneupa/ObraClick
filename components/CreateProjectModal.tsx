@@ -27,7 +27,7 @@ export default function CreateProjectModal() {
         setShowUpgradeModal(true);
       } else if (result.code === "PLAN_LIMIT_PROJECTS") {
         setIsOpen(false);
-        setUpgradeReason("Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a ObraClick PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras.");
+        setUpgradeReason("Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a CertiObra PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras.");
         setShowUpgradeModal(true);
       } else {
         toast(result.error || "Datos no válidos", "error");
@@ -270,7 +270,7 @@ export default function CreateProjectModal() {
       <UpgradeModal 
         isOpen={showUpgradeModal} 
         onClose={() => setShowUpgradeModal(false)}
-        reason={upgradeReason || "Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a ObraClick PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras."}
+        reason={upgradeReason || "Has alcanzado el límite de 1 obra del Plan Gratuito. Pasa a CertiObra PRO para crear obras ilimitadas, descargar certificaciones y gestionar presupuestos sin barreras."}
       />
     </>
   );

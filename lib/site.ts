@@ -12,6 +12,6 @@ export function getSiteUrl(): string {
     process.env.NEXT_PUBLIC_APP_URL ||
     process.env.NEXTAUTH_URL ||
     process.env.RENDER_EXTERNAL_URL ||
-    "https://obraclick.com";
+    "https://certiobra.com";
   return raw.trim().replace(/\/+$/, "");
 }

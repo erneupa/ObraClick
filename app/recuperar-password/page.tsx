@@ -5,7 +5,7 @@ import ResetPasswordForm from "@/components/ResetPasswordForm";
 
 export const metadata: Metadata = {
   title: "Recuperar Contraseña",
-  description: "Restablece el acceso a tu cuenta en ObraClick.",
+  description: "Restablece el acceso a tu cuenta en CertiObra.",
   alternates: {
     canonical: "/recuperar-password",
   },
@@ -81,7 +81,7 @@ export default function RecuperarPasswordPage() {
 
         <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid var(--surface-border)" }}>
           <p style={{ margin: 0, fontSize: "13px", color: "var(--text-secondary)" }}>
-            ObraClick · Gestión integral de obras y proyectos
+            CertiObra · Gestión integral de obras y proyectos
           </p>
         </div>
       </div>

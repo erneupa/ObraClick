@@ -18,7 +18,7 @@ export default function PrivacyGdprSettings() {
       const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
       const downloadAnchor = document.createElement("a");
       downloadAnchor.setAttribute("href", jsonString);
-      downloadAnchor.setAttribute("download", `obraclick_datos_personales_${new Date().toISOString().slice(0, 10)}.json`);
+      downloadAnchor.setAttribute("download", `certiobra_datos_personales_${new Date().toISOString().slice(0, 10)}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();

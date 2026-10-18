@@ -55,7 +55,7 @@ export default function DashboardSidebar({
         <div style={{ marginBottom: "28px", paddingLeft: "8px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Link href="/" style={{ textDecoration: "none" }}>
             <h2 style={{ margin: 0, fontSize: "20px", letterSpacing: "-0.5px", color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ color: "var(--accent-primary)" }}>🏗️</span> ObraClick
+              <span style={{ color: "var(--accent-primary)" }}>🏗️</span> CertiObra
             </h2>
           </Link>
           <span style={{
@@ -367,7 +367,7 @@ export default function DashboardSidebar({
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <span style={{ fontSize: "20px" }}>🏗️</span>
-                <span style={{ fontWeight: "800", fontSize: "18px", color: "#fff" }}>ObraClick</span>
+                <span style={{ fontWeight: "800", fontSize: "18px", color: "#fff" }}>CertiObra</span>
                 <span style={{
                   fontSize: "10px",
                   fontWeight: "800",

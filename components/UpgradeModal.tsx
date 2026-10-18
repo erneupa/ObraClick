@@ -79,7 +79,7 @@ export default function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalPr
         {success ? (
           <div style={{ padding: "30px 10px" }}>
             <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎉</div>
-            <h2 style={{ fontSize: "24px", margin: "0 0 10px 0", color: "#fff" }}>¡Bienvenido a ObraClick PRO!</h2>
+            <h2 style={{ fontSize: "24px", margin: "0 0 10px 0", color: "#fff" }}>¡Bienvenido a CertiObra PRO!</h2>
             <p className="text-secondary" style={{ fontSize: "15px", margin: 0 }}>
               Tu cuenta ha sido actualizada con éxito. Desbloqueando obras ilimitadas...
             </p>
@@ -103,7 +103,7 @@ export default function UpgradeModal({ isOpen, onClose, reason }: UpgradeModalPr
             </div>
 
             <h2 style={{ fontSize: "26px", margin: "0 0 10px 0", fontWeight: "800", color: "#fff" }}>
-              Pasa a ObraClick PRO
+              Pasa a CertiObra PRO
             </h2>
 
             <p className="text-secondary" style={{ fontSize: "14px", lineHeight: "1.5", margin: "0 0 24px" }}>

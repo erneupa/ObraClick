@@ -29,13 +29,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ObraClick | Software de Gestión de Obras, Reformas y Construcción",
-    template: "%s | ObraClick",
+    default: "CertiObra | Software de Gestión, Partes y Certificación de Obras",
+    template: "%s | CertiObra",
   },
   description:
     "El software en la nube #1 para constructoras, arquitectos y empresas de reformas. Partes diarios digitales, control presupuestario en tiempo real, cronograma de hitos y certificaciones automáticas.",
-  applicationName: "ObraClick",
-  authors: [{ name: "ObraClick", url: siteUrl }],
+  applicationName: "CertiObra",
+  authors: [{ name: "CertiObra", url: siteUrl }],
   generator: "Next.js",
   keywords: [
     "software gestion obras",
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
     "libro de ordenes digital",
     "plataforma gestion proyectos construccion",
   ],
-  creator: "ObraClick",
-  publisher: "ObraClick",
+  creator: "CertiObra",
+  publisher: "CertiObra",
   category: "business",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ObraClick",
+    title: "CertiObra",
   },
   formatDetection: {
     email: false,
@@ -75,20 +75,20 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "ObraClick | El Software #1 de Control y Gestión de Obras",
+    title: "CertiObra | Software de Control, Partes y Certificación de Obras",
     description:
-      "Controla tus obras y reformas en tiempo real: partes diarios digitales con fotos, control de gastos sin desviaciones, seguimiento de hitos y certificaciones en 1 click.",
+      "Controla tus obras y reformas en tiempo real: partes diarios digitales con fotos, control de gastos sin desviaciones, seguimiento de hitos y certificaciones oficiales.",
     url: siteUrl,
-    siteName: "ObraClick",
+    siteName: "CertiObra",
     locale: "es_ES",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ObraClick | Software de Gestión y Control de Obras",
+    title: "CertiObra | Software de Gestión y Control de Obras",
     description:
       "Ahorra hasta 18h semanales y elimina desvíos presupuestarios en tus obras. Pruébalo gratis sin tarjeta.",
-    creator: "@obraclick",
+    creator: "@certiobra",
   },
   robots: {
     index: true,
@@ -110,8 +110,8 @@ export const metadata: Metadata = {
 const jsonLdOrganization = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "ObraClick",
-  alternateName: "ObraClick Software",
+  name: "CertiObra",
+  alternateName: "CertiObra Software",
   url: siteUrl,
   logo: `${siteUrl}/favicon.ico`,
   description:
@@ -119,7 +119,7 @@ const jsonLdOrganization = {
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
-    email: "soporte@obraclick.es",
+    email: "soporte@certiobra.com",
     availableLanguage: ["Spanish", "English"],
   },
 };
@@ -127,7 +127,7 @@ const jsonLdOrganization = {
 const jsonLdSoftwareApp = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "ObraClick",
+  name: "CertiObra",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web, iOS, Android, macOS, Windows",
   softwareVersion: "2.0",

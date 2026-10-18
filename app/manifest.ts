@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ObraClick — Software de Gestión de Obras",
-    short_name: "ObraClick",
+    name: "CertiObra — Software de Gestión de Obras",
+    short_name: "CertiObra",
     description: "Control presupuestario, partes diarios digitales con fotos y cronograma de obras.",
     start_url: "/dashboard",
     display: "standalone",

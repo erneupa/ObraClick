@@ -14,19 +14,19 @@ export default function CookieBanner() {
 
   const initialConsent = useSyncExternalStore(
     emptySubscribe,
-    () => localStorage.getItem("obraclick_cookie_consent"),
+    () => localStorage.getItem("certiobra_cookie_consent") || localStorage.getItem("obraclick_cookie_consent"),
     () => "server"
   );
 
   const [dismissed, setDismissed] = useState(false);
 
   function handleAcceptAll() {
-    localStorage.setItem("obraclick_cookie_consent", "all");
+    localStorage.setItem("certiobra_cookie_consent", "all");
     setDismissed(true);
   }
 
   function handleAcceptEssential() {
-    localStorage.setItem("obraclick_cookie_consent", "essential");
+    localStorage.setItem("certiobra_cookie_consent", "essential");
     setDismissed(true);
   }
 

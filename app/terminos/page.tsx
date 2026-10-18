@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones de Uso",
-  description: "Términos generales de contratación y condiciones de uso de la plataforma de software para obras ObraClick.",
+  description: "Términos generales de contratación y condiciones de uso de la plataforma de software para obras CertiObra.",
   alternates: {
     canonical: "/terminos",
   },
@@ -45,14 +45,14 @@ export default function TerminosPage() {
             Términos y Condiciones de Contratación
           </h1>
           <p className="text-secondary" style={{ marginBottom: "32px", fontSize: "14px" }}>
-            Vigente desde Octubre de 2026. Regula el acceso y la contratación de los servicios de la plataforma ObraClick.
+            Vigente desde Octubre de 2026. Regula el acceso y la contratación de los servicios de la plataforma CertiObra.
           </p>
 
           <section style={{ display: "flex", flexDirection: "column", gap: "28px", lineHeight: "1.7", color: "var(--text-secondary)", fontSize: "15px" }}>
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>1. Objeto y Ámbito de Aplicación</h2>
               <p style={{ margin: 0 }}>
-                Las presentes Condiciones Generales regulan el acceso y uso de la plataforma digital ObraClick (el &quot;Servicio&quot;), ofrecida por el equipo titular de ObraClick como solución de software en la nube dirigida a profesionales de la construcción, reformas, arquitectura, promotoras e ingenierías (B2B), así como a usuarios del sector.
+                Las presentes Condiciones Generales regulan el acceso y uso de la plataforma digital CertiObra (el &quot;Servicio&quot;), ofrecida por el equipo titular de CertiObra como solución de software en la nube dirigida a profesionales de la construcción, reformas, arquitectura, promotoras e ingenierías (B2B), así como a usuarios del sector.
               </p>
             </div>
 
@@ -69,7 +69,7 @@ export default function TerminosPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>3. Sin Permanencia y Cancelación</h2>
               <p style={{ margin: 0 }}>
-                Las suscripciones de ObraClick no exigen compromiso de permanencia. El usuario puede cancelar o reducir su plan a Free en cualquier momento desde el panel de Suscripción con efecto al finalizar el ciclo de facturación en curso, sin penalización económica alguna.
+                Las suscripciones de CertiObra no exigen compromiso de permanencia. El usuario puede cancelar o reducir su plan a Free en cualquier momento desde el panel de Suscripción con efecto al finalizar el ciclo de facturación en curso, sin penalización económica alguna.
               </p>
             </div>
 
@@ -83,14 +83,14 @@ export default function TerminosPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>5. Propiedad y Custodia de los Datos de Obra</h2>
               <p style={{ margin: 0 }}>
-                El cliente conserva la propiedad íntegra e incondicional de todos los datos introducidos: mediciones, albaranes, partes fotográficos diarios, presupuestos y certificaciones. ObraClick garantiza el derecho del cliente a exportar sus datos en cualquier momento durante la vigencia de la suscripción.
+                El cliente conserva la propiedad íntegra e incondicional de todos los datos introducidos: mediciones, albaranes, partes fotográficos diarios, presupuestos y certificaciones. CertiObra garantiza el derecho del cliente a exportar sus datos en cualquier momento durante la vigencia de la suscripción.
               </p>
             </div>
 
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>6. Nivel de Servicio (SLA) y Disponibilidad</h2>
               <p style={{ margin: 0 }}>
-                ObraClick se compromete a realizar sus mejores esfuerzos técnicos para garantizar una disponibilidad operativa mensual de al menos el 99.8%, realizando copias de seguridad continuas para prevenir cualquier pérdida accidental de registros de obra.
+                CertiObra se compromete a realizar sus mejores esfuerzos técnicos para garantizar una disponibilidad operativa mensual de al menos el 99.8%, realizando copias de seguridad continuas para prevenir cualquier pérdida accidental de registros de obra.
               </p>
             </div>
 
@@ -99,7 +99,7 @@ export default function TerminosPage() {
                 7. Exclusión Expresa de Responsabilidad Técnica y Constructiva (LOE / CTE)
               </h2>
               <p style={{ margin: "0 0 10px 0", color: "#cbd5e1" }}>
-                ObraClick es única y exclusivamente un <strong>proveedor de software informático y administrativo en la nube</strong>. En ningún caso ObraClick, su titular ni sus creadores, desarrolladores o colaboradores ostentan la condición de:
+                CertiObra es única y exclusivamente un <strong>proveedor de software informático y administrativo en la nube</strong>. En ningún caso CertiObra, su titular ni sus creadores, desarrolladores o colaboradores ostentan la condición de:
               </p>
               <ul style={{ paddingLeft: "20px", margin: "0 0 10px 0", color: "#cbd5e1", display: "flex", flexDirection: "column", gap: "6px" }}>
                 <li>Director de Obra, Director de Ejecución de la Obra o Proyectista conforme a la <strong>Ley 38/1999, de 5 de noviembre, de Ordenación de la Edificación (LOE)</strong>.</li>
@@ -117,8 +117,8 @@ export default function TerminosPage() {
                 En la máxima medida permitida por la legislación aplicable:
               </p>
               <ul style={{ paddingLeft: "20px", margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-                <li><strong>Cap Económico:</strong> La responsabilidad económica total y acumulada de ObraClick frente al usuario por cualquier concepto (contractual, extracontractual, culpa o negligencia) quedará <strong>estrictamente limitada al importe total efectivamente abonado por el usuario en concepto de cuotas de suscripción durante los últimos tres (3) meses anteriores al hecho causante</strong>, o a una cuantía máxima de cincuenta euros (50,00 €) en caso de usuarios del plan Free.</li>
-                <li><strong>Exclusión de Daños Indirectos:</strong> ObraClick no responderá en ningún caso por <strong>lucro cesante, pérdidas de beneficio, penalizaciones contractuales por retrasos en los plazos de obra, paralizaciones administrativas de tajos, multas de inspección de trabajo, ni daños emergentes, indirectos o morales</strong> derivados del uso, interrupción o fallo de la plataforma.</li>
+                <li><strong>Cap Económico:</strong> La responsabilidad económica total y acumulada de CertiObra frente al usuario por cualquier concepto (contractual, extracontractual, culpa o negligencia) quedará <strong>estrictamente limitada al importe total efectivamente abonado por el usuario en concepto de cuotas de suscripción durante los últimos tres (3) meses anteriores al hecho causante</strong>, o a una cuantía máxima de cincuenta euros (50,00 €) en caso de usuarios del plan Free.</li>
+                <li><strong>Exclusión de Daños Indirectos:</strong> CertiObra no responderá en ningún caso por <strong>lucro cesante, pérdidas de beneficio, penalizaciones contractuales por retrasos en los plazos de obra, paralizaciones administrativas de tajos, multas de inspección de trabajo, ni daños emergentes, indirectos o morales</strong> derivados del uso, interrupción o fallo de la plataforma.</li>
               </ul>
             </div>
 

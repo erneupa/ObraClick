@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Aviso Legal e Información Corporativa",
-  description: "Información legal, mercantil y condiciones de prestación de servicios de la plataforma ObraClick en cumplimiento de la LSSI-CE.",
+  description: "Información legal, mercantil y condiciones de prestación de servicios de la plataforma CertiObra en cumplimiento de la LSSI-CE.",
   alternates: {
     canonical: "/aviso-legal",
   },
@@ -53,12 +53,12 @@ export default function AvisoLegalPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>1. Datos Identificativos del Proyecto y Contacto</h2>
               <p style={{ margin: "0 0 8px 0" }}>
-                El presente sitio web y la plataforma ObraClick operan como un <strong>proyecto de software y desarrollo tecnológico en fase de prelanzamiento y Beta abierta</strong>:
+                El presente sitio web y la plataforma CertiObra operan como un <strong>proyecto de software y desarrollo tecnológico en fase de prelanzamiento y Beta abierta</strong>:
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-                <li><strong>Nombre del Proyecto:</strong> ObraClick</li>
+                <li><strong>Nombre del Proyecto:</strong> CertiObra</li>
                 <li><strong>Naturaleza del Servicio:</strong> Solución de software en la nube en periodo de evaluación tecnológica para profesionales y empresas del sector de la construcción.</li>
-                <li><strong>Correo Electrónico de Contacto y Soporte:</strong> contacto@obraclick.es / soporte@obraclick.es</li>
+                <li><strong>Correo Electrónico de Contacto y Soporte:</strong> contacto@certiobra.com / soporte@certiobra.com</li>
                 <li><strong>Finalidad:</strong> Pruebas operativas, recogida de feedback técnico y validación funcional sin comercialización obligatoria previa.</li>
               </ul>
             </div>
@@ -66,17 +66,17 @@ export default function AvisoLegalPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>2. Propiedad Intelectual e Industrial</h2>
               <p style={{ margin: 0 }}>
-                El código fuente, diseños gráficos, interfaces, logotipos, algoritmos de cálculo de avances y desviaciones presupuestarias, textos y arquitectura de la plataforma ObraClick son titularidad exclusiva de los creadores y titulares de ObraClick o de sus licenciantes legítimos, encontrándose protegidos por la legislación española e internacional sobre propiedad intelectual e industrial (Real Decreto Legislativo 1/1996).
+                El código fuente, diseños gráficos, interfaces, logotipos, algoritmos de cálculo de avances y desviaciones presupuestarias, textos y arquitectura de la plataforma CertiObra son titularidad exclusiva de los creadores y titulares de CertiObra o de sus licenciantes legítimos, encontrándose protegidos por la legislación española e internacional sobre propiedad intelectual e industrial (Real Decreto Legislativo 1/1996).
               </p>
             </div>
 
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>3. Exclusión de Responsabilidad Técnica y Facultativa</h2>
               <p style={{ margin: "0 0 8px 0" }}>
-                ObraClick proporciona herramientas digitales para el seguimiento organizativo, documental, presupuestario y fotográfico de obras. Conforme a la <strong>Ley 38/1999, de 5 de noviembre, de Ordenación de la Edificación (LOE)</strong>:
+                CertiObra proporciona herramientas digitales para el seguimiento organizativo, documental, presupuestario y fotográfico de obras. Conforme a la <strong>Ley 38/1999, de 5 de noviembre, de Ordenación de la Edificación (LOE)</strong>:
               </p>
               <ul style={{ paddingLeft: "20px", margin: 0 }}>
-                <li>ObraClick <strong>no ostenta ni asume</strong> la condición de Director de Obra, Director de Ejecución de la Obra ni Coordinador de Seguridad y Salud.</li>
+                <li>CertiObra <strong>no ostenta ni asume</strong> la condición de Director de Obra, Director de Ejecución de la Obra ni Coordinador de Seguridad y Salud.</li>
                 <li>Los datos de avance, mediciones y fotografías son introducidos por los usuarios facultativos habilitados, siendo estos los responsables exclusivos de su veracidad ante colegios oficiales, promotores y administraciones públicas.</li>
               </ul>
             </div>

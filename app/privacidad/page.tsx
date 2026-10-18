@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad y Protección de Datos (RGPD)",
-  description: "Política de privacidad y tratamiento de datos personales conforme al Reglamento General de Protección de Datos (RGPD) en ObraClick.",
+  description: "Política de privacidad y tratamiento de datos personales conforme al Reglamento General de Protección de Datos (RGPD) en CertiObra.",
   alternates: {
     canonical: "/privacidad",
   },
@@ -53,10 +53,10 @@ export default function PrivacidadPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>1. Responsable del Tratamiento</h2>
               <p style={{ margin: "0 0 6px 0" }}>
-                <strong>Identidad:</strong> ObraClick (Equipo de Desarrollo Tecnológico y Titular del Servicio)<br />
+                <strong>Identidad:</strong> CertiObra (Equipo de Desarrollo Tecnológico y Titular del Servicio)<br />
                 <strong>Naturaleza:</strong> Plataforma de software en fase Beta y validación operativa<br />
-                <strong>Email de Privacidad y Ejercicio de Derechos (ARCO/RGPD):</strong> privacidad@obraclick.es / soporte@obraclick.es<br />
-                <strong>Delegado de Privacidad:</strong> dpo@obraclick.es
+                <strong>Email de Privacidad y Ejercicio de Derechos (ARCO/RGPD):</strong> privacidad@certiobra.com / soporte@certiobra.com<br />
+                <strong>Delegado de Privacidad:</strong> dpo@certiobra.com
               </p>
             </div>
 
@@ -79,7 +79,7 @@ export default function PrivacidadPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>3. Datos de Terceros y Encargo de Tratamiento (Art. 28 RGPD)</h2>
               <p style={{ margin: 0 }}>
-                Cuando el usuario (constructora, arquitecto o promotor) introduce en ObraClick datos de carácter personal relativos a operarios, subcontratas, técnicos o clientes finales (por ejemplo, en el módulo de Equipo o en Partes Diarios), el <strong>Usuario actúa como Responsable del Tratamiento</strong> y <strong>ObraClick actúa en calidad de Encargado del Tratamiento</strong>. ObraClick tratará dichos datos únicamente siguiendo las instrucciones documentadas del cliente y aplicará medidas técnicas y organizativas para garantizar su estricta confidencialidad.
+                Cuando el usuario (constructora, arquitecto o promotor) introduce en CertiObra datos de carácter personal relativos a operarios, subcontratas, técnicos o clientes finales (por ejemplo, en el módulo de Equipo o en Partes Diarios), el <strong>Usuario actúa como Responsable del Tratamiento</strong> y <strong>CertiObra actúa en calidad de Encargado del Tratamiento</strong>. CertiObra tratará dichos datos únicamente siguiendo las instrucciones documentadas del cliente y aplicará medidas técnicas y organizativas para garantizar su estricta confidencialidad.
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function PrivacidadPage() {
                 <li><strong>Limitación y Oposición:</strong> Limitar u oponerse a determinados tratamientos en los términos previstos en la ley.</li>
               </ul>
               <p style={{ margin: 0 }}>
-                Puede ejercer estos derechos directamente desde su panel de <Link href="/dashboard/settings" style={{ color: "var(--accent-primary)" }}>Ajustes de Cuenta</Link> o enviando un correo a <strong>privacidad@obraclick.es</strong> con copia de su documento de identidad. Asimismo, tiene derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)" }}>www.aepd.es</a>.
+                Puede ejercer estos derechos directamente desde su panel de <Link href="/dashboard/settings" style={{ color: "var(--accent-primary)" }}>Ajustes de Cuenta</Link> o enviando un correo a <strong>privacidad@certiobra.com</strong> con copia de su documento de identidad. Asimismo, tiene derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)" }}>www.aepd.es</a>.
               </p>
             </div>
 

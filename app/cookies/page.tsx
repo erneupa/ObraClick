@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Política de Cookies",
-  description: "Información detallada sobre el uso de cookies técnicas y de preferencias en ObraClick conforme a la guía de la AEPD.",
+  description: "Información detallada sobre el uso de cookies técnicas y de preferencias en CertiObra conforme a la guía de la AEPD.",
   alternates: {
     canonical: "/cookies",
   },
@@ -57,9 +57,9 @@ export default function CookiesPage() {
             </div>
 
             <div>
-              <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 12px 0" }}>2. Tipos de cookies utilizadas en ObraClick</h2>
+              <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 12px 0" }}>2. Tipos de cookies utilizadas en CertiObra</h2>
               <p style={{ margin: "0 0 16px 0" }}>
-                En ObraClick aplicamos el principio de <strong>privacidad por diseño y por defecto</strong>. No vendemos datos a intermediarios publicitarios.
+                En CertiObra aplicamos el principio de <strong>privacidad por diseño y por defecto</strong>. No vendemos datos a intermediarios publicitarios.
               </p>
               
               <div style={{ overflowX: "auto" }}>
@@ -86,7 +86,7 @@ export default function CookiesPage() {
                       <td style={{ padding: "10px" }}>Sesión</td>
                     </tr>
                     <tr>
-                      <td style={{ padding: "10px", fontWeight: "600", color: "#fff" }}>obraclick_cookie_consent</td>
+                      <td style={{ padding: "10px", fontWeight: "600", color: "#fff" }}>certiobra_cookie_consent</td>
                       <td style={{ padding: "10px" }}>Preferencias</td>
                       <td style={{ padding: "10px" }}>Registro de la elección del banner de cookies del usuario</td>
                       <td style={{ padding: "10px" }}>12 meses</td>
@@ -112,7 +112,7 @@ export default function CookiesPage() {
             <div>
               <h2 style={{ fontSize: "19px", color: "#fff", margin: "0 0 8px 0" }}>4. Actualización de la Política de Cookies</h2>
               <p style={{ margin: 0 }}>
-                ObraClick puede modificar esta Política de Cookies en función de nuevas exigencias legislativas, reglamentarias o con la finalidad de adaptar dicha política a las instrucciones dictadas por la Agencia Española de Protección de Datos (AEPD).
+                CertiObra puede modificar esta Política de Cookies en función de nuevas exigencias legislativas, reglamentarias o con la finalidad de adaptar dicha política a las instrucciones dictadas por la Agencia Española de Protección de Datos (AEPD).
               </p>
             </div>
           </section>

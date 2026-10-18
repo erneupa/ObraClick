@@ -423,13 +423,13 @@ export default function ProjectDetailsClient({
                 Período de prueba de 14 días concluido
               </h4>
               <p style={{ margin: "4px 0 0 0", color: "#e2e8f0", fontSize: "13px" }}>
-                Tu cuenta está en modo de solo lectura. Para seguir añadiendo partes diarios, gastos y generar certificaciones oficiales sin marca de agua, actualiza a ObraClick PRO.
+                Tu cuenta está en modo de solo lectura. Para seguir añadiendo partes diarios, gastos y generar certificaciones oficiales sin marca de agua, actualiza a CertiObra PRO.
               </p>
             </div>
           </div>
           <button
             onClick={() => {
-              setUpgradeReason("Tu período de prueba de 14 días ha concluido. Pasa a ObraClick PRO para gestionar todas tus obras sin límites y certificar proyectos oficiales.");
+              setUpgradeReason("Tu período de prueba de 14 días ha concluido. Pasa a CertiObra PRO para gestionar todas tus obras sin límites y certificar proyectos oficiales.");
               setShowUpgradeModal(true);
             }}
             className="btn-primary"

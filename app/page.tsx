@@ -14,10 +14,10 @@ const jsonLdFaq = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Qué es ObraClick y qué ventajas ofrece frente a Excel o WhatsApp?",
+      "name": "¿Qué es CertiObra y qué ventajas ofrece frente a Excel o WhatsApp?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ObraClick es el software en la nube líder para la gestión integral de obras, reformas y proyectos de construcción. Unifica en una sola plataforma a jefes de obra, arquitectos, cuadrillas y clientes, sustituyendo carpetas físicas y hojas de cálculo desactualizadas por un control financiero en tiempo real, diario fotográfico y cronograma Gantt digital."
+        "text": "CertiObra es el software en la nube líder para la gestión integral de obras, reformas y proyectos de construcción. Unifica en una sola plataforma a jefes de obra, arquitectos, cuadrillas y clientes, sustituyendo carpetas físicas y hojas de cálculo desactualizadas por un control financiero en tiempo real, diario fotográfico y cronograma Gantt digital."
       }
     },
     {
@@ -33,7 +33,7 @@ const jsonLdFaq = {
       "name": "¿Mis operarios y subcontratas necesitan instalar una app complicada?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. ObraClick funciona como una Progressive Web App (PWA) de última generación directamente en el navegador del teléfono móvil o tablet (iOS y Android). No requiere descargas pesadas y cuenta con una interfaz táctil optimizada para el uso con guantes y condiciones de obra."
+        "text": "No. CertiObra funciona como una Progressive Web App (PWA) de última generación directamente en el navegador del teléfono móvil o tablet (iOS y Android). No requiere descargas pesadas y cuenta con una interfaz táctil optimizada para el uso con guantes y condiciones de obra."
       }
     },
     {
@@ -46,7 +46,7 @@ const jsonLdFaq = {
     },
     {
       "@type": "Question",
-      "name": "¿Puedo probar ObraClick gratis y qué incluye la prueba?",
+      "name": "¿Puedo probar CertiObra gratis y qué incluye la prueba?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Sí. Puedes registrarte al instante con tu cuenta de Google sin introducir ninguna tarjeta de crédito. Dispones de un periodo de prueba de 14 días con acceso completo para gestionar tu primera obra, partes diarios, hitos y gastos sin ningún coste ni permanencia."
@@ -57,7 +57,7 @@ const jsonLdFaq = {
       "name": "¿Cumple la plataforma con la normativa legal y protección de datos (RGPD)?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Totalmente. ObraClick cumple con el Reglamento General de Protección de Datos (RGPD), la LSSI-CE y los estándares de seguridad de la edificación (LOE), alojando los datos con cifrado SSL/TLS de 256 bits y copias de seguridad continuas en centros de datos europeos de alta disponibilidad."
+        "text": "Totalmente. CertiObra cumple con el Reglamento General de Protección de Datos (RGPD), la LSSI-CE y los estándares de seguridad de la edificación (LOE), alojando los datos con cifrado SSL/TLS de 256 bits y copias de seguridad continuas en centros de datos europeos de alta disponibilidad."
       }
     }
   ]
@@ -197,7 +197,7 @@ export default async function HomePage() {
             }}>
               <img 
                 src="/hero-construction.png" 
-                alt="ObraClick - Software de gestión y control integral de obras y reformas en tiempo real" 
+                alt="CertiObra - Software de gestión y control integral de obras y reformas en tiempo real" 
                 style={{ width: "100%", height: "auto", display: "block", maxHeight: "620px", objectFit: "cover" }}
               />
               <div style={{
@@ -299,7 +299,7 @@ export default async function HomePage() {
             }}>
               <img 
                 src="/dashboard-preview.png" 
-                alt="Panel de control táctil de obra en tiempo real con estadísticas y gráficos ObraClick" 
+                alt="Panel de control táctil de obra en tiempo real con estadísticas y gráficos CertiObra" 
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>
@@ -473,14 +473,14 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Comparison Section: Traditional Method vs ObraClick */}
+        {/* Comparison Section: Traditional Method vs CertiObra */}
         <section id="comparativa" style={{ padding: "80px 24px", maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
           <div style={{ textAlign: "center", marginBottom: "50px" }}>
             <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: "800", letterSpacing: "-1px", margin: "0 0 16px" }}>
               El Salto Cuántico en tu Gestión de Obra
             </h2>
             <p className="text-secondary" style={{ fontSize: "17px" }}>
-              Compara el método tradicional en papel frente a la tranquilidad de digitalizar tu obra con ObraClick.
+              Compara el método tradicional en papel frente a la tranquilidad de digitalizar tu obra con CertiObra.
             </p>
           </div>
 
@@ -490,7 +490,7 @@ export default async function HomePage() {
                 <tr style={{ borderBottom: "1px solid var(--surface-border)" }}>
                   <th style={{ padding: "16px", color: "var(--text-secondary)", width: "35%" }}>Aspecto de Gestión</th>
                   <th style={{ padding: "16px", color: "#f87171", width: "32%" }}>❌ Método Tradicional</th>
-                  <th style={{ padding: "16px", color: "#60a5fa", width: "33%" }}>✨ Con ObraClick</th>
+                  <th style={{ padding: "16px", color: "#60a5fa", width: "33%" }}>✨ Con CertiObra</th>
                 </tr>
               </thead>
               <tbody>
@@ -625,16 +625,16 @@ export default async function HomePage() {
         <section id="faq" style={{ padding: "60px 24px 100px", maxWidth: "880px", margin: "0 auto", position: "relative" }}>
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
             <h2 style={{ fontSize: "clamp(26px, 3.5vw, 38px)", fontWeight: "800", letterSpacing: "-0.5px", margin: "0 0 12px" }}>
-              Preguntas Frecuentes sobre ObraClick
+              Preguntas Frecuentes sobre CertiObra
             </h2>
             <p className="text-secondary" style={{ fontSize: "16px" }}>Resolvemos las dudas habituales de directores de obra y constructores</p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             <div className="glass-panel" style={{ padding: "24px 28px" }}>
-              <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Qué es ObraClick y qué ventajas ofrece frente a Excel o WhatsApp?</h3>
+              <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Qué es CertiObra y qué ventajas ofrece frente a Excel o WhatsApp?</h3>
               <p className="text-secondary" style={{ margin: 0, fontSize: "15px", lineHeight: "1.6" }}>
-                ObraClick es el software en la nube líder para la gestión integral de obras, reformas y proyectos de construcción. Unifica en una sola plataforma a jefes de obra, arquitectos, cuadrillas y clientes, sustituyendo carpetas físicas y hojas de cálculo desactualizadas por un control financiero en tiempo real, diario fotográfico y cronograma Gantt digital.
+                CertiObra es el software en la nube líder para la gestión integral de obras, reformas y proyectos de construcción. Unifica en una sola plataforma a jefes de obra, arquitectos, cuadrillas y clientes, sustituyendo carpetas físicas y hojas de cálculo desactualizadas por un control financiero en tiempo real, diario fotográfico y cronograma Gantt digital.
               </p>
             </div>
 
@@ -648,7 +648,7 @@ export default async function HomePage() {
             <div className="glass-panel" style={{ padding: "24px 28px" }}>
               <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Mis operarios y subcontratas necesitan instalar una app complicada?</h3>
               <p className="text-secondary" style={{ margin: 0, fontSize: "15px", lineHeight: "1.6" }}>
-                No. ObraClick funciona como una Progressive Web App (PWA) de última generación directamente en el navegador del teléfono móvil o tablet (iOS y Android). No requiere descargas pesadas y cuenta con una interfaz táctil optimizada para el uso con guantes y condiciones de obra.
+                No. CertiObra funciona como una Progressive Web App (PWA) de última generación directamente en el navegador del teléfono móvil o tablet (iOS y Android). No requiere descargas pesadas y cuenta con una interfaz táctil optimizada para el uso con guantes y condiciones de obra.
               </p>
             </div>
 
@@ -660,7 +660,7 @@ export default async function HomePage() {
             </div>
 
             <div className="glass-panel" style={{ padding: "24px 28px" }}>
-              <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Puedo probar ObraClick gratis y qué incluye la prueba?</h3>
+              <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Puedo probar CertiObra gratis y qué incluye la prueba?</h3>
               <p className="text-secondary" style={{ margin: 0, fontSize: "15px", lineHeight: "1.6" }}>
                 Sí. Puedes registrarte al instante con tu cuenta de Google sin introducir ninguna tarjeta de crédito. Dispones de un periodo de prueba de 14 días con acceso completo para gestionar tu primera obra, partes diarios, hitos y gastos sin ningún coste ni permanencia.
               </p>
@@ -669,7 +669,7 @@ export default async function HomePage() {
             <div className="glass-panel" style={{ padding: "24px 28px" }}>
               <h3 style={{ fontSize: "18px", margin: "0 0 10px", color: "var(--text-primary)" }}>¿Cumple la plataforma con la normativa legal y protección de datos (RGPD)?</h3>
               <p className="text-secondary" style={{ margin: 0, fontSize: "15px", lineHeight: "1.6" }}>
-                Totalmente. ObraClick cumple con el Reglamento General de Protección de Datos (RGPD), la LSSI-CE y los estándares de seguridad de la edificación (LOE), alojando los datos con cifrado SSL/TLS de 256 bits y copias de seguridad continuas en centros de datos europeos de alta disponibilidad.
+                Totalmente. CertiObra cumple con el Reglamento General de Protección de Datos (RGPD), la LSSI-CE y los estándares de seguridad de la edificación (LOE), alojando los datos con cifrado SSL/TLS de 256 bits y copias de seguridad continuas en centros de datos europeos de alta disponibilidad.
               </p>
             </div>
           </div>
@@ -715,7 +715,7 @@ export default async function HomePage() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span style={{ fontSize: "24px" }}>🏗️</span>
             <div>
-              <span style={{ fontSize: "18px", fontWeight: "800", color: "#fff" }}>ObraClick</span>
+              <span style={{ fontSize: "18px", fontWeight: "800", color: "#fff" }}>CertiObra</span>
               <span style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block" }}>
                 Software de Gestión y Control de Obras Inteligente
               </span>
@@ -734,7 +734,7 @@ export default async function HomePage() {
             <Link href="/login">Acceso Clientes</Link>
           </div>
           <div style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
-            © {new Date().getFullYear()} ObraClick. Todos los derechos reservados.
+            © {new Date().getFullYear()} CertiObra. Todos los derechos reservados.
           </div>
         </div>
       </footer>

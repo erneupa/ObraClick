@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 
-export const alt = "ObraClick | El Software #1 de Control y Gestión de Obras y Reformas";
+export const alt = "CertiObra | El Software #1 de Control y Gestión de Obras y Reformas";
 export const size = {
   width: 1200,
   height: 630,
@@ -136,7 +136,7 @@ export default async function Image() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ fontSize: "20px", color: "#ffffff", fontWeight: "700" }}>obraclick.com</span>
+            <span style={{ fontSize: "20px", color: "#ffffff", fontWeight: "700" }}>certiobra.com</span>
           </div>
         </div>
       </div>

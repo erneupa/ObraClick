@@ -1,6 +1,6 @@
 # 🚀 Guía de Despliegue en Render (Render.com)
 
-Esta guía explica cómo desplegar **ObraClick** en la nube de Render con base de datos PostgreSQL gestionada de forma automática y gratuita.
+Esta guía explica cómo desplegar **CertiObra** en la nube de Render con base de datos PostgreSQL gestionada de forma automática y gratuita.
 
 ---
 
@@ -11,12 +11,12 @@ El repositorio incluye un archivo [`render.yaml`](./render.yaml) preconfigurado 
 ### Pasos:
 1. Accede a tu panel en [dashboard.render.com](https://dashboard.render.com).
 2. Haz clic en el botón superior **"New +"** y selecciona **"Blueprint"**.
-3. Conecta tu cuenta de GitHub y selecciona el repositorio **`erneupa/ObraClick`**.
+3. Conecta tu cuenta de GitHub y selecciona el repositorio **`erneupa/CertiObra`**.
 4. Render leerá automáticamente el archivo `render.yaml` y mostrará los dos recursos que creará:
-   - **`obraclick-db`**: Base de datos PostgreSQL gratuita (Región Frankfurt / Europa).
-   - **`obraclick`**: Web Service Node.js gratuito con Next.js 16.
+   - **`certiobra-db`**: Base de datos PostgreSQL gratuita (Región Frankfurt / Europa).
+   - **`certiobra`**: Web Service Node.js gratuito con Next.js 16.
 5. Haz clic en **"Apply"** (o "Create Blueprint Instance").
-6. ¡Listo! Render compilará el proyecto, creará las tablas automáticamente y te dará una URL pública tipo `https://obraclick.onrender.com`.
+6. ¡Listo! Render compilará el proyecto, creará las tablas automáticamente y te dará una URL pública tipo `https://certiobra.onrender.com`.
 
 ---
 
@@ -26,9 +26,9 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
 
 ### Paso 1: Crear la Base de Datos PostgreSQL
 1. En Render, clic en **"New +"** -> **"PostgreSQL"**.
-2. **Name:** `obraclick-db`
-3. **Database:** `obraclick_db`
-4. **User:** `obraclick_user`
+2. **Name:** `certiobra-db`
+3. **Database:** `certiobra_db`
+4. **User:** `certiobra_user`
 5. **Region:** `Frankfurt (EU Central)`
 6. **Plan:** `Free`
 7. Haz clic en **"Create Database"**.
@@ -36,9 +36,9 @@ Si prefieres crear los servicios manualmente en la interfaz de Render:
 
 ### Paso 2: Crear el Web Service de Next.js
 1. En Render, clic en **"New +"** -> **"Web Service"**.
-2. Conecta tu repositorio de GitHub `erneupa/ObraClick`.
+2. Conecta tu repositorio de GitHub `erneupa/CertiObra`.
 3. Configuración del servicio:
-   - **Name:** `obraclick`
+   - **Name:** `certiobra`
    - **Region:** `Frankfurt (EU Central)`
    - **Branch:** `main`
    - **Runtime:** `Node`
@@ -82,7 +82,7 @@ Según la [documentación oficial de Render](https://render.com/docs/free):
 - La **base de datos PostgreSQL gratuita caduca a los 30 días** de su creación y, pasados 14 días más sin mejorarla de plan, Render la elimina con todos sus datos. No tiene copias de seguridad.
 - El servicio web gratuito se **suspende tras 15 minutos sin tráfico** (la primera visita después tarda en responder).
 
-Para usar ObraClick con clientes reales, pasa la base de datos (y el servicio web) a un plan de pago antes de que caduque.
+Para usar CertiObra con clientes reales, pasa la base de datos (y el servicio web) a un plan de pago antes de que caduque.
 
 ---
 

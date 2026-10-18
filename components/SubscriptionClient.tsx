@@ -143,7 +143,7 @@ export default function SubscriptionClient({
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px", flexWrap: "wrap" }}>
               <span style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>
-                Plan Actual: {isPro ? "ObraClick PRO" : "Plan Básico (Free)"}
+                Plan Actual: {isPro ? "CertiObra PRO" : "Plan Básico (Free)"}
               </span>
               <span style={{
                 fontSize: "11px",
@@ -321,7 +321,7 @@ export default function SubscriptionClient({
 
           <div style={{ marginBottom: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <h3 style={{ fontSize: "20px", margin: "0 0 6px 0", color: "#fff" }}>ObraClick PRO</h3>
+              <h3 style={{ fontSize: "20px", margin: "0 0 6px 0", color: "#fff" }}>CertiObra PRO</h3>
               <span style={{ fontSize: "20px" }}>⭐</span>
             </div>
             <p className="text-secondary" style={{ fontSize: "13px", margin: 0 }}>
@@ -442,7 +442,7 @@ export default function SubscriptionClient({
 
           <div>
             <a 
-              href="mailto:empresas@obraclick.es?subject=Consulta%20Plan%20Enterprise%20ObraClick"
+              href="mailto:empresas@certiobra.com?subject=Consulta%20Plan%20Enterprise%20CertiObra"
               className="btn-secondary" 
               style={{
                 width: "100%",

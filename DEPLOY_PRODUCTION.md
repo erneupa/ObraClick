@@ -1,6 +1,6 @@
-# 🚀 Guía de Despliegue en Producción — ObraClick
+# 🚀 Guía de Despliegue en Producción — CertiObra
 
-Esta guía resume los pasos para publicar ObraClick en producción en **Vercel** conectado a una base de datos **PostgreSQL** gratuita y gestionada (como **Supabase** o **Neon**).
+Esta guía resume los pasos para publicar CertiObra en producción en **Vercel** conectado a una base de datos **PostgreSQL** gratuita y gestionada (como **Supabase** o **Neon**).
 
 ---
 
@@ -51,7 +51,7 @@ En el panel de tu proyecto en Vercel (`Settings` > `Environment Variables`), añ
 ---
 
 ## 5. PWA (Instalación en Smartphones de Obra)
-ObraClick ya cuenta con:
+CertiObra ya cuenta con:
 - `manifest.ts` configurado para modo `standalone`.
 - Iconos dinámicos adaptativos (`/icon` y `/apple-icon`).
 - Meta tags de pantalla completa para iOS y Android.

@@ -31,7 +31,7 @@ export default async function DashboardHeader({ plan = "FREE", trialEndsAt = nul
         {/* Mobile Header Brand */}
         <a href="/dashboard" className="mobile-header-brand">
           <span style={{ fontSize: "20px" }}>🏗️</span>
-          <span style={{ fontWeight: "800", letterSpacing: "-0.5px" }}>ObraClick</span>
+          <span style={{ fontWeight: "800", letterSpacing: "-0.5px" }}>CertiObra</span>
         </a>
 
         {/* Trial Status Notice in Header (Desktop) */}

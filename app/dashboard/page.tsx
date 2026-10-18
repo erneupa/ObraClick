@@ -89,7 +89,7 @@ export default async function DashboardPage() {
                   Tu período de prueba de 14 días ha finalizado
                 </h4>
                 <p style={{ margin: "2px 0 0 0", color: "#e2e8f0", fontSize: "13px" }}>
-                  La plataforma está en modo solo lectura. Pasa a ObraClick PRO para seguir creando obras, registrando partes y certificando sin marca de agua.
+                  La plataforma está en modo solo lectura. Pasa a CertiObra PRO para seguir creando obras, registrando partes y certificando sin marca de agua.
                 </p>
               </div>
             </div>

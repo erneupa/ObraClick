@@ -33,7 +33,7 @@ export default function LandingHeader({ hasSession }: LandingHeaderProps) {
     }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {/* Brand Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }} aria-label="ObraClick Inicio">
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }} aria-label="CertiObra Inicio">
           <div style={{
             width: "38px",
             height: "38px",
@@ -49,10 +49,10 @@ export default function LandingHeader({ hasSession }: LandingHeaderProps) {
           </div>
           <div>
             <span style={{ fontSize: "20px", fontWeight: "800", letterSpacing: "-0.5px", color: "#ffffff" }}>
-              Obra<span style={{ color: "var(--accent-primary)" }}>Click</span>
+              Certi<span style={{ color: "var(--accent-primary)" }}>Obra</span>
             </span>
             <span style={{ display: "block", fontSize: "9px", textTransform: "uppercase", letterSpacing: "1.2px", color: "var(--text-secondary)", fontWeight: "600" }}>
-              Gestión de Obra
+              Control & Certificación
             </span>
           </div>
         </Link>

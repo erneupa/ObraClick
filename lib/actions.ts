@@ -890,7 +890,7 @@ export async function registerUser(formData: FormData) {
   if (existingCif) {
     return {
       success: false as const,
-      error: `El CIF/NIF (${cif}) ya tiene una cuenta registrada en ObraClick. Para mantener el histórico y la trazabilidad de tus obras, inicia sesión con la cuenta de tu empresa o activa el Plan PRO.`,
+      error: `El CIF/NIF (${cif}) ya tiene una cuenta registrada en CertiObra. Para mantener el histórico y la trazabilidad de tus obras, inicia sesión con la cuenta de tu empresa o activa el Plan PRO.`,
     };
   }
 

@@ -33,7 +33,7 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
         setShowUpgradeModal(true);
       } else if (result.code === "PLAN_LIMIT_TEAM") {
         setIsOpen(false);
-        setUpgradeReason("Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a ObraClick PRO para añadir cuadrillas y subcontratistas ilimitados.");
+        setUpgradeReason("Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a CertiObra PRO para añadir cuadrillas y subcontratistas ilimitados.");
         setShowUpgradeModal(true);
       } else {
         toast(result.error || "Datos no válidos", "error");
@@ -280,7 +280,7 @@ export default function TeamClient({ initialMembers }: TeamClientProps) {
       <UpgradeModal 
         isOpen={showUpgradeModal} 
         onClose={() => setShowUpgradeModal(false)}
-        reason={upgradeReason || "Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a ObraClick PRO para añadir cuadrillas y subcontratistas ilimitados."}
+        reason={upgradeReason || "Has alcanzado el límite de 2 colaboradores del Plan Gratuito. Pasa a CertiObra PRO para añadir cuadrillas y subcontratistas ilimitados."}
       />
     </div>
   );

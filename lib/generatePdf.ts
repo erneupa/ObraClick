@@ -71,7 +71,7 @@ export function exportProjectCertificationPDF(project: ProjectPDFData, isPro: bo
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text("ObraClick", 15, 18);
+  doc.text("CertiObra", 15, 18);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
@@ -239,7 +239,7 @@ export function exportProjectCertificationPDF(project: ProjectPDFData, isPro: bo
   doc.setFontSize(8);
   doc.setTextColor(100, 116, 139);
   doc.text(
-    "El presente documento certifica los avances físicos y financieros registrados digitalmente a pie de obra mediante ObraClick.",
+    "El presente documento certifica los avances físicos y financieros registrados digitalmente a pie de obra mediante CertiObra.",
     15,
     currentY
   );
@@ -273,7 +273,7 @@ export function exportProjectCertificationPDF(project: ProjectPDFData, isPro: bo
       doc.setFontSize(7);
       doc.setTextColor(220, 38, 38);
       doc.text(
-        "⚠️ COPIA DE PRUEBA NO CERTIFICADA · CONTRATE EL PLAN PRO EN OBRACLICK.ES PARA VALIDEZ LEGAL Y SIN MARCAS",
+        "⚠️ COPIA DE PRUEBA NO CERTIFICADA · CONTRATE EL PLAN PRO EN CERTIOBRA.COM PARA VALIDEZ LEGAL Y SIN MARCAS",
         pageWidth / 2,
         4.2,
         { align: "center" }
@@ -294,7 +294,7 @@ export function exportProjectCertificationPDF(project: ProjectPDFData, isPro: bo
         align: "center",
         angle: 45,
       });
-      doc.text("OBRACLICK.ES — CONTRATE PLAN PRO PARA RETIRAR MARCA", pageWidth / 2, pageHeight / 2 + 20, {
+      doc.text("CERTIOBRA.COM — CONTRATE PLAN PRO PARA RETIRAR MARCA", pageWidth / 2, pageHeight / 2 + 20, {
         align: "center",
         angle: 45,
       });
@@ -305,7 +305,7 @@ export function exportProjectCertificationPDF(project: ProjectPDFData, isPro: bo
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
     doc.text(
-      `ObraClick · Certificación de Obra · Página ${i} de ${totalPages}`,
+      `CertiObra · Certificación de Obra · Página ${i} de ${totalPages}`,
       pageWidth / 2,
       pageHeight - 8,
       { align: "center" }
@@ -342,7 +342,7 @@ export function exportProjectFullReportPDF(project: ProjectPDFData, isPro: boole
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text("ObraClick", 15, 18);
+  doc.text("CertiObra", 15, 18);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
@@ -647,7 +647,7 @@ export function exportProjectFullReportPDF(project: ProjectPDFData, isPro: boole
       doc.setFontSize(7);
       doc.setTextColor(220, 38, 38);
       doc.text(
-        "⚠️ COPIA DE PRUEBA NO CERTIFICADA · CONTRATE EL PLAN PRO EN OBRACLICK.ES PARA VALIDEZ LEGAL Y SIN MARCAS",
+        "⚠️ COPIA DE PRUEBA NO CERTIFICADA · CONTRATE EL PLAN PRO EN CERTIOBRA.COM PARA VALIDEZ LEGAL Y SIN MARCAS",
         pageWidth / 2,
         4.2,
         { align: "center" }
@@ -667,7 +667,7 @@ export function exportProjectFullReportPDF(project: ProjectPDFData, isPro: boole
         align: "center",
         angle: 45,
       });
-      doc.text("OBRACLICK.ES — ACTUALICE A PRO PARA RETIRAR MARCA", pageWidth / 2, pageHeight / 2 + 20, {
+      doc.text("CERTIOBRA.COM — ACTUALICE A PRO PARA RETIRAR MARCA", pageWidth / 2, pageHeight / 2 + 20, {
         align: "center",
         angle: 45,
       });
@@ -678,7 +678,7 @@ export function exportProjectFullReportPDF(project: ProjectPDFData, isPro: boole
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
     doc.text(
-      `ObraClick · Informe Completo de Obra · Página ${i} de ${totalPages}`,
+      `CertiObra · Informe Completo de Obra · Página ${i} de ${totalPages}`,
       pageWidth / 2,
       pageHeight - 8,
       { align: "center" }
@@ -731,7 +731,7 @@ export function exportSingleDailyReportPDF(data: SingleDailyReportPDFData, isPro
   doc.setFont("helvetica", "bold");
   doc.setFontSize(20);
   doc.setTextColor(255, 255, 255);
-  doc.text("ObraClick", 15, 18);
+  doc.text("CertiObra", 15, 18);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
@@ -885,7 +885,7 @@ export function exportSingleDailyReportPDF(data: SingleDailyReportPDFData, isPro
       doc.setFontSize(7);
       doc.setTextColor(220, 38, 38);
       doc.text(
-        "⚠️ COPIA DE PRUEBA · CONTRATE EL PLAN PRO EN OBRACLICK.ES PARA VALIDEZ LEGAL Y SIN MARCAS",
+        "⚠️ COPIA DE PRUEBA · CONTRATE EL PLAN PRO EN CERTIOBRA.COM PARA VALIDEZ LEGAL Y SIN MARCAS",
         pageWidth / 2,
         4.2,
         { align: "center" }
@@ -906,7 +906,7 @@ export function exportSingleDailyReportPDF(data: SingleDailyReportPDFData, isPro
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
     doc.text(
-      `ObraClick · Parte Diario · ${data.projectName} · Página ${i} de ${totalPages}`,
+      `CertiObra · Parte Diario · ${data.projectName} · Página ${i} de ${totalPages}`,
       pageWidth / 2,
       pageHeight - 8,
       { align: "center" }

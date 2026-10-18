@@ -1,4 +1,4 @@
-// Servicio de Emails Transaccionales para ObraClick
+// Servicio de Emails Transaccionales para CertiObra
 // Compatible con Resend API y modo desarrollo/simulación
 
 import { getSiteUrl } from "./site";
@@ -46,7 +46,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ObraClick <onboarding@resend.dev>",
+        from: process.env.EMAIL_FROM || "CertiObra <onboarding@resend.dev>",
         to: [to],
         subject,
         html,
@@ -77,11 +77,11 @@ export async function sendWelcomeEmail(to: string, userName: string) {
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: #131d31; border: 1px solid #1e293b; border-radius: 16px; padding: 36px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
           <div style="text-align: center; margin-bottom: 28px;">
-            <h1 style="color: #3b82f6; font-size: 26px; margin: 0; font-weight: 800;">🏗️ ObraClick</h1>
+            <h1 style="color: #3b82f6; font-size: 26px; margin: 0; font-weight: 800;">🏗️ CertiObra</h1>
             <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Control & Certificación de Obras en la Nube</p>
           </div>
 
-          <h2 style="color: #ffffff; font-size: 20px;">¡Bienvenido a ObraClick, ${escapeHtml(userName)}!</h2>
+          <h2 style="color: #ffffff; font-size: 20px;">¡Bienvenido a CertiObra, ${escapeHtml(userName)}!</h2>
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
             Tu cuenta ha sido creada con éxito. Ya puedes gestionar tus obras, crear partes diarios con fotos en tiempo real y controlar presupuestos con alertas de sobrecostes.
           </p>
@@ -103,7 +103,7 @@ export async function sendWelcomeEmail(to: string, userName: string) {
 
           <hr style="border: none; border-top: 1px solid #1e293b; margin: 28px 0;" />
           <p style="color: #64748b; font-size: 12px; text-align: center; margin: 0;">
-            © ${new Date().getFullYear()} ObraClick · Todos los derechos reservados.
+            © ${new Date().getFullYear()} CertiObra · Todos los derechos reservados.
           </p>
         </div>
       </body>
@@ -112,7 +112,7 @@ export async function sendWelcomeEmail(to: string, userName: string) {
 
   return sendEmail({
     to,
-    subject: "Bienvenido a ObraClick 🏗️ Tu cuenta está lista",
+    subject: "Bienvenido a CertiObra 🏗️ Tu cuenta está lista",
     html,
   });
 }
@@ -156,7 +156,7 @@ export async function sendUrgentIncidentEmail(
 
           <div style="text-align: center; margin: 28px 0;">
             <a href="${appUrl}/dashboard" style="background: #dc2626; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">
-              Revisar Incidencia en ObraClick →
+              Revisar Incidencia en CertiObra →
             </a>
           </div>
         </div>
@@ -180,7 +180,7 @@ export async function sendTrialExpiringEmail(to: string, userName: string, daysL
       <head><meta charset="utf-8" /></head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: #131d31; border: 1px solid #f59e0b; border-radius: 16px; padding: 36px;">
-          <h2 style="color: #f59e0b; font-size: 20px; margin-top: 0;">⏳ Tu prueba gratuita en ObraClick finaliza en ${daysLeft} días</h2>
+          <h2 style="color: #f59e0b; font-size: 20px; margin-top: 0;">⏳ Tu prueba gratuita en CertiObra finaliza en ${daysLeft} días</h2>
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
             Hola ${escapeHtml(userName)}, tu período de evaluación de 14 días está a punto de concluir. Para seguir certificando obras sin marca de agua y con almacenamiento ilimitado de partes diarios, activa el Plan PRO.
           </p>
@@ -196,7 +196,7 @@ export async function sendTrialExpiringEmail(to: string, userName: string, daysL
 
   return sendEmail({
     to,
-    subject: `⏳ Tu prueba de ObraClick expira en ${daysLeft} días`,
+    subject: `⏳ Tu prueba de CertiObra expira en ${daysLeft} días`,
     html,
   });
 }
@@ -210,13 +210,13 @@ export async function sendPasswordResetEmail(to: string, userName: string, reset
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b0f19; color: #f8fafc; padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: #131d31; border: 1px solid #1e293b; border-radius: 16px; padding: 36px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
           <div style="text-align: center; margin-bottom: 28px;">
-            <h1 style="color: #3b82f6; font-size: 26px; margin: 0; font-weight: 800;">🏗️ ObraClick</h1>
+            <h1 style="color: #3b82f6; font-size: 26px; margin: 0; font-weight: 800;">🏗️ CertiObra</h1>
             <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Recuperación Segura de Contraseña</p>
           </div>
 
           <h2 style="color: #ffffff; font-size: 20px;">Restablecer contraseña</h2>
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
-            Hola ${escapeHtml(userName)}, hemos recibido una solicitud para restablecer la contraseña de tu cuenta en ObraClick.
+            Hola ${escapeHtml(userName)}, hemos recibido una solicitud para restablecer la contraseña de tu cuenta en CertiObra.
           </p>
 
           <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6;">
@@ -238,7 +238,7 @@ export async function sendPasswordResetEmail(to: string, userName: string, reset
 
           <hr style="border: none; border-top: 1px solid #1e293b; margin: 28px 0;" />
           <p style="color: #64748b; font-size: 12px; text-align: center; margin: 0;">
-            © ${new Date().getFullYear()} ObraClick · Software de Gestión de Obras
+            © ${new Date().getFullYear()} CertiObra · Software de Gestión de Obras
           </p>
         </div>
       </body>
@@ -247,7 +247,7 @@ export async function sendPasswordResetEmail(to: string, userName: string, reset
 
   return sendEmail({
     to,
-    subject: "🔐 Restablecer tu contraseña en ObraClick",
+    subject: "🔐 Restablecer tu contraseña en CertiObra",
     html,
   });
 }

@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Acceso y Registro Profesional",
-  description: "Inicia sesión o crea tu cuenta gratuita en ObraClick. Control de obras, cuadrillas, partes diarios y certificaciones en tiempo real.",
+  description: "Inicia sesión o crea tu cuenta gratuita en CertiObra. Control de obras, cuadrillas, partes diarios y certificaciones en tiempo real.",
   alternates: {
     canonical: "/login",
   },
@@ -43,7 +43,7 @@ export default async function LoginPage({
             textDecoration: "none"
           }}
         >
-          ← Volver a ObraClick
+          ← Volver a CertiObra
         </Link>
         <div style={{ marginBottom: "24px" }}>
           <div style={{ display: "inline-flex", padding: "10px", borderRadius: "14px", background: "rgba(59, 130, 246, 0.15)", marginBottom: "12px", color: "var(--accent-primary)", fontSize: "28px" }}>

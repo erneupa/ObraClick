@@ -24,7 +24,7 @@ export function toast(message: string, type: ToastType = "info", durationMs = 35
     globalShowToast(message, type, durationMs);
   } else if (typeof window !== "undefined") {
     window.dispatchEvent(
-      new CustomEvent("obraclick-toast", {
+      new CustomEvent("certiobra-toast", {
         detail: { message, type, durationMs },
       })
     );
@@ -69,9 +69,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    window.addEventListener("certiobra-toast", handleCustomToast);
     window.addEventListener("obraclick-toast", handleCustomToast);
     return () => {
       globalShowToast = null;
+      window.removeEventListener("certiobra-toast", handleCustomToast);
       window.removeEventListener("obraclick-toast", handleCustomToast);
     };
   }, [showToast]);

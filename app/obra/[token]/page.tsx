@@ -16,10 +16,10 @@ export async function generateMetadata({
     select: { name: true, clientName: true },
   });
 
-  if (!project) return { title: "Obra no encontrada | ObraClick" };
+  if (!project) return { title: "Obra no encontrada | CertiObra" };
 
   return {
-    title: `${project.name} — Portal del Cliente | ObraClick`,
+    title: `${project.name} — Portal del Cliente | CertiObra`,
     description: `Seguimiento en tiempo real de la obra "${project.name}"${project.clientName ? ` para ${project.clientName}` : ""}. Consulta hitos, avance y fotografías.`,
     robots: { index: false, follow: false },
   };
@@ -86,7 +86,7 @@ export default async function ClientPortalPage({
             fontSize: "18px", fontWeight: "800", color: "#fff",
           }}>O</div>
           <div>
-            <div style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>ObraClick</div>
+            <div style={{ fontSize: "16px", fontWeight: "700", color: "#fff" }}>CertiObra</div>
             <div style={{ fontSize: "11px", color: "#94a3b8" }}>Portal del Cliente</div>
           </div>
         </div>
@@ -362,10 +362,10 @@ export default async function ClientPortalPage({
         {/* Footer */}
         <div style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <p style={{ margin: "0 0 4px 0" }}>
-            Portal de seguimiento generado por <strong style={{ color: "#94a3b8" }}>ObraClick</strong>
+            Portal de seguimiento generado por <strong style={{ color: "#94a3b8" }}>CertiObra</strong>
           </p>
           <p style={{ margin: 0 }}>
-            Software de gestión de obras · <Link href="/" style={{ color: "#3b82f6", textDecoration: "underline" }}>obraclick.com</Link>
+            Software de gestión de obras · <Link href="/" style={{ color: "#3b82f6", textDecoration: "underline" }}>certiobra.com</Link>
           </p>
         </div>
       </main>

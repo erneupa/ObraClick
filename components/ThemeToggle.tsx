@@ -9,7 +9,7 @@ function subscribe(callback: () => void) {
 
 function getSnapshot(): "dark" | "light" {
   if (typeof window === "undefined") return "dark";
-  const saved = localStorage.getItem("obraclick-theme");
+  const saved = localStorage.getItem("certiobra-theme") || localStorage.getItem("obraclick-theme");
   return saved === "light" ? "light" : "dark";
 }
 
@@ -27,7 +27,7 @@ export default function ThemeToggle() {
 
   function toggleTheme() {
     const next = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("obraclick-theme", next);
+    localStorage.setItem("certiobra-theme", next);
     document.documentElement.setAttribute("data-theme", next);
     window.dispatchEvent(new Event("storage"));
   }
