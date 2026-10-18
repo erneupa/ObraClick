@@ -23,10 +23,18 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log(`[EMAIL SIMULADO - OBRACLICK DEV]`);
+    // Extraer enlaces del HTML si existen para facilitar pruebas locales
+    const linkMatch = html.match(/href="([^"]+)"/);
+    console.log(`\n================== [EMAIL SIMULADO (SIN RESEND_API_KEY)] ==================`);
     console.log(`Destinatario: ${to}`);
-    console.log(`Asunto: ${subject}`);
-    console.log(`[Contenido HTML generado correctamente]`);
+    console.log(`Asunto:       ${subject}`);
+    if (linkMatch && linkMatch[1]) {
+      console.log(`🔗 ENLACE:     ${linkMatch[1]}`);
+    }
+    console.log(`ℹ️ Para recibir correos reales en tu bandeja de entrada:`);
+    console.log(`   1. Crea una cuenta gratuita en https://resend.com`);
+    console.log(`   2. Añade RESEND_API_KEY="re_..." en tu archivo .env.local y en Render/Vercel.`);
+    console.log(`===========================================================================\n`);
     return { success: true, id: `dev_sim_${Date.now()}` };
   }
 
@@ -38,7 +46,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ObraClick <notificaciones@obraclick.es>",
+        from: process.env.EMAIL_FROM || "ObraClick <onboarding@resend.dev>",
         to: [to],
         subject,
         html,
