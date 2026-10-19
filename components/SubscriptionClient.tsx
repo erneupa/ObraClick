@@ -208,7 +208,7 @@ export default function SubscriptionClient({
       </div>
 
       {/* Pricing Cards Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(310px, 1fr))", gap: "24px", marginBottom: "40px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "24px", marginBottom: "40px" }}>
         
         {/* FREE PLAN */}
         <div className="glass-panel" style={{
@@ -503,7 +503,7 @@ export default function SubscriptionClient({
       {/* FAQs */}
       <div className="glass-panel" style={{ padding: "28px", borderRadius: "16px" }}>
         <h3 style={{ fontSize: "18px", margin: "0 0 16px 0" }}>Preguntas Frecuentes sobre la Suscripción</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px", fontSize: "13px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "20px", fontSize: "13px" }}>
           <div>
             <strong style={{ color: "#fff", display: "block", marginBottom: "4px" }}>
               ¿Hay permanencia obligatoria?

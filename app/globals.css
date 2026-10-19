@@ -404,13 +404,10 @@ html {
     gap: 16px !important;
   }
 
-  /* Generic grid auto-override on mobile for cramped cards */
-  div[style*="gridTemplateColumns"] {
+  /* Cards & Panels mobile adjustments */
+  .responsive-grid {
     grid-template-columns: 1fr !important;
-  }
-
-  .hero-metrics-grid[style*="gridTemplateColumns"] {
-    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
   }
 
   /* Reduce large section vertical paddings on mobile */
@@ -598,4 +595,224 @@ html {
     grid-template-columns: 1fr;
   }
 }
+
+/* ========================================================
+   RESPONSIVE FEATURE TABS & INTERACTIVE CALCULATOR
+   ======================================================== */
+
+/* Dashboard Two Column Grid */
+.dashboard-two-column-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-two-column-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Feature Tabs System */
+.feature-tabs-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.feature-tabs-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.feature-tab-btn {
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--surface-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.feature-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.feature-tab-btn-active {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: #fff !important;
+  border-color: rgba(59, 130, 246, 0.6) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
+
+.feature-tab-label-short {
+  display: none;
+}
+
+.feature-tabs-card {
+  padding: 36px;
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 30, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 400px;
+  width: 100%;
+}
+
+.feature-tabs-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.feature-mockup-box {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+
+.feature-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Calculator System */
+.calc-card {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 36px 32px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
+  width: 100%;
+}
+
+.calc-sliders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-bottom: 36px;
+}
+
+.calc-slider-box {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.calc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.calc-stat-card {
+  padding: 8px 12px;
+}
+
+/* Mobile Responsive Adaptations for Interactive Components */
+@media (max-width: 768px) {
+  .feature-tab-label-full {
+    display: none;
+  }
+  .feature-tab-label-short {
+    display: inline;
+  }
+  .feature-tabs-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+    width: 100%;
+  }
+  .feature-tab-btn {
+    padding: 10px 6px;
+    font-size: 12px;
+    justify-content: center;
+    border-radius: 10px;
+    width: 100%;
+  }
+  .feature-tabs-card {
+    padding: 18px 14px !important;
+    border-radius: 18px !important;
+  }
+  .feature-tabs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+  .feature-mockup-box {
+    padding: 16px 12px !important;
+    border-radius: 12px !important;
+  }
+  .feature-actions-row {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .feature-actions-row a,
+  .feature-actions-row button {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Calculator Mobile */
+  .calc-card {
+    padding: 20px 14px !important;
+    border-radius: 18px !important;
+  }
+  .calc-sliders-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    margin-bottom: 20px !important;
+  }
+  .calc-slider-box {
+    padding: 16px 12px !important;
+  }
+  .calc-tick-desktop {
+    display: none !important;
+  }
+  .calc-results-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 16px 12px !important;
+  }
+  .calc-stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 14px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-tab-btn {
+    font-size: 11px;
+    padding: 8px 4px;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
 

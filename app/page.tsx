@@ -255,7 +255,7 @@ export default async function HomePage() {
 
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))",
             gap: "40px",
             alignItems: "center",
             marginBottom: "80px"
@@ -332,7 +332,7 @@ export default async function HomePage() {
 
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
             gap: "28px"
           }}>
             <div className="feature-card">
@@ -494,8 +494,8 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="glass-panel" style={{ padding: "32px", overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "15px" }}>
+          <div className="glass-panel" style={{ padding: "32px", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+            <table style={{ width: "100%", minWidth: "560px", borderCollapse: "collapse", textAlign: "left", fontSize: "15px" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--surface-border)" }}>
                   <th style={{ padding: "16px", color: "var(--text-secondary)", width: "35%" }}>Aspecto de Gestión</th>
@@ -553,7 +553,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", alignItems: "stretch" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "32px", alignItems: "stretch" }}>
             {/* Plan Free */}
             <div className="glass-panel" style={{ padding: "40px 32px", display: "flex", flexDirection: "column" }}>
               <h3 style={{ fontSize: "22px", margin: "0 0 8px" }}>Plan Gratuito</h3>
