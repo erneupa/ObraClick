@@ -12,10 +12,9 @@ export default function LandingHeader({ hasSession }: LandingHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "#caracteristicas", label: "Características" },
     { href: "#modulos", label: "Plataforma" },
-    { href: "#para-quien", label: "Para Quién" },
-    { href: "#soluciones", label: "Soluciones" },
+    { href: "#caracteristicas", label: "Características" },
+    { href: "#calculadora", label: "Simulador Ahorro" },
     { href: "#comparativa", label: "Comparativa" },
     { href: "#precios", label: "Precios" },
     { href: "#faq", label: "FAQ" },

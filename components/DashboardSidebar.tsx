@@ -83,13 +83,16 @@ export default function DashboardSidebar({
                   display: "flex",
                   alignItems: "center",
                   gap: "12px",
-                  padding: "10px 12px",
-                  borderRadius: "8px",
-                  color: isActive ? "white" : "var(--text-secondary)",
-                  background: isActive ? "var(--accent-primary)" : "transparent",
+                  padding: "10px 14px",
+                  borderRadius: "10px",
+                  color: isActive ? "#ffffff" : "var(--text-secondary)",
+                  background: isActive ? "linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.15) 100%)" : "transparent",
+                  border: isActive ? "1px solid rgba(59, 130, 246, 0.4)" : "1px solid transparent",
                   textDecoration: "none",
-                  fontWeight: isActive ? "600" : "400",
-                  transition: "all 0.2s"
+                  fontWeight: isActive ? "700" : "500",
+                  fontSize: "14px",
+                  boxShadow: isActive ? "0 4px 15px rgba(59, 130, 246, 0.2)" : "none",
+                  transition: "all 0.2s cubic-bezier(0.16, 1, 0.3, 1)"
                 }}
               >
                 <span style={{ fontSize: "18px" }}>{link.icon}</span>

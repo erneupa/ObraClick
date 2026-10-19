@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import LandingHeader from "@/components/LandingHeader";
+import InteractiveCalculator from "@/components/InteractiveCalculator";
+import InteractiveFeatureTabs from "@/components/InteractiveFeatureTabs";
 import { getSiteUrl } from "@/lib/site";
 
 export const instant = false;
@@ -107,20 +109,23 @@ export default async function HomePage() {
         }}
       />
 
-      {/* Ambient background glows */}
-      <div className="glow-spot" style={{ top: "-100px", left: "50%", transform: "translateX(-50%)", width: "800px", height: "500px", background: "radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0) 70%)" }} />
-      <div className="glow-spot" style={{ top: "800px", right: "-100px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%)" }} />
+      {/* Ambient aurora background mesh */}
+      <div className="aurora-mesh">
+        <div className="aurora-orb-1" />
+        <div className="aurora-orb-2" />
+      </div>
+      <div className="glow-spot" style={{ top: "900px", right: "-100px", width: "600px", height: "600px", background: "radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%)" }} />
 
       {/* Responsive Navigation Header */}
       <LandingHeader hasSession={!!session} />
 
       {/* Main Content Landmark */}
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, position: "relative", zIndex: 1 }}>
         {/* Hero Section */}
         <section style={{ padding: "80px 24px 60px", maxWidth: "1280px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 10 }}>
-          <div className="badge slide-up" style={{ marginBottom: "24px" }}>
-            <span style={{ fontSize: "16px" }}>⚡</span>
-            <span>NUEVA PLATAFORMA 2.0 • Digitalización Inteligente de Obras y Reformas</span>
+          <div className="badge-live slide-up" style={{ marginBottom: "24px" }}>
+            <span className="live-dot" />
+            <span>CERTIOBRA 2.0 • Digitalización Inteligente y Certificación de Obras</span>
           </div>
 
           <h1 className="slide-up" style={{
@@ -131,8 +136,8 @@ export default async function HomePage() {
             maxWidth: "1050px",
             letterSpacing: "-1.5px"
           }}>
-            Software de Control y Gestión de Obras:<br />
-            <span className="gradient-text">Cero desvíos, máxima rentabilidad en tiempo real.</span>
+            Software de Control y Certificación de Obras:<br />
+            <span className="gradient-text shimmer-text">Cero desvíos, máxima rentabilidad en tiempo real.</span>
           </h1>
 
           <p className="slide-up text-secondary" style={{
@@ -303,6 +308,11 @@ export default async function HomePage() {
                 style={{ width: "100%", height: "auto", display: "block" }}
               />
             </div>
+          </div>
+
+          {/* Interactive Live Simulated Demos */}
+          <div style={{ marginTop: "40px" }}>
+            <InteractiveFeatureTabs />
           </div>
         </section>
 
@@ -522,6 +532,11 @@ export default async function HomePage() {
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/* Interactive ROI & Savings Calculator Section */}
+        <section id="calculadora" style={{ padding: "60px 24px", maxWidth: "1280px", margin: "0 auto", position: "relative" }}>
+          <InteractiveCalculator />
         </section>
 
         {/* Pricing Section */}

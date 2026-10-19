@@ -151,7 +151,7 @@ export default async function DashboardPage() {
 
       {/* KPI Cards Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: "16px", marginBottom: "32px" }}>
-        <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
+        <div className="glow-card" style={{ padding: "24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
             <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>Obras Activas</span>
             <span style={{ fontSize: "22px", background: "rgba(59, 130, 246, 0.15)", padding: "8px", borderRadius: "10px" }}>🏗️</span>
@@ -164,7 +164,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
+        <div className="glow-card" style={{ padding: "24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
             <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>Presupuesto Ejecutado</span>
             <span style={{ fontSize: "22px", background: "rgba(16, 185, 129, 0.15)", padding: "8px", borderRadius: "10px" }}>💰</span>
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
+        <div className="glow-card" style={{ padding: "24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
             <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>Incidencias Pendientes</span>
             <span style={{ fontSize: "22px", background: "rgba(239, 68, 68, 0.15)", padding: "8px", borderRadius: "10px" }}>⚠️</span>
@@ -190,7 +190,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
+        <div className="glow-card" style={{ padding: "24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
             <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>Personal de Equipo</span>
             <span style={{ fontSize: "22px", background: "rgba(245, 158, 11, 0.15)", padding: "8px", borderRadius: "10px" }}>👷</span>
