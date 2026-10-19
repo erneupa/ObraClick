@@ -16,10 +16,48 @@ export function LoginButton({ text = "Continuar con Google" }: { text?: string }
   );
 }
 
-export function LogoutButton() {
+export function LogoutButton({ showText = false }: { showText?: boolean }) {
   return (
-    <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary">
-      Cerrar Sesión
+    <button
+      type="button"
+      onClick={() => signOut({ callbackUrl: "/" })}
+      title="Cerrar sesión"
+      aria-label="Cerrar sesión"
+      className="btn-logout-icon"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "8px",
+        width: showText ? "auto" : "38px",
+        height: "38px",
+        padding: showText ? "0 14px" : "0",
+        borderRadius: "10px",
+        border: "1px solid var(--surface-border)",
+        background: "rgba(255, 255, 255, 0.05)",
+        color: "var(--text-secondary)",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        flexShrink: 0,
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ display: "block" }}
+      >
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+      {showText && <span style={{ fontSize: "14px", fontWeight: "600" }}>Cerrar sesión</span>}
     </button>
   );
 }
