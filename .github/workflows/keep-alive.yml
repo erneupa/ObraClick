@@ -1,0 +1,16 @@
+name: Keep Render Service Awake
+
+on:
+  schedule:
+    # Ejecuta cada 14 minutos (Render entra en suspensión a los 15 min de inactividad)
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub si se desea
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping CertiObra Health Endpoint
+        run: |
+          echo "Realizando ping para mantener activa la instancia de Render..."
+          curl -sS --retry 2 https://obraclick.onrender.com/api/health || curl -sS https://certiobra.es/api/health

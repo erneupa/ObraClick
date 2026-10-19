@@ -8,7 +8,8 @@
     "build:render": "node scripts/switch-db.js postgresql && prisma generate && prisma db push && next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx seed-demo.ts"
+    "seed": "tsx seed-demo.ts",
+    "keep-alive": "node scripts/keep-alive.js"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
